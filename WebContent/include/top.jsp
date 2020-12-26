@@ -11,7 +11,7 @@ if(session.getAttribute("USER_ID")==null){
 		<li><a href="../member/join01.jsp"><img src="../images/lnb02.gif" alt="JOIN" /></a></li>
 <%} else { %>
 		<!-- 로그인후 -->
-		<li><a href="logout.jsp"><img src="../images/lnb05.gif" alt="LOG OUT" /></a></li>
+		<li><a href="../member/logout.jsp"><img src="../images/lnb05.gif" alt="LOG OUT" /></a></li>
 		<li><a href="../center/sub07.jsp"><img src="../images/lnb06.gif" alt="MODIFY" /></a></li>
 <% } %>	
 		

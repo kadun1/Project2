@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class BbsDAO {
 
 	Connection con; 
 	PreparedStatement psmt;
+	Statement stmt;
 	ResultSet rs;
 	
 	public BbsDAO(String driver, String url, String id, String pw) {		
@@ -125,6 +127,37 @@ public class BbsDAO {
 		return bbs;
 	}	
 	
+	public List<BbsDTO> selectMainPage() {
+		List<BbsDTO> bbs = new ArrayList<BbsDTO>();
+
+		//쿼리문이 아래와같이 페이지처리 쿼리문으로 변경됨.
+		String query = " "	
+			+"		SELECT num, title, postdate FROM board  " 
+			+" ORDER BY num DESC LIMIT 0, 4";
+			
+		System.out.println("쿼리문:"+ query);
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+
+			while(rs.next()) {
+				BbsDTO dto = new BbsDTO();
+
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setPostdate(rs.getDate("postdate"));
+				
+				bbs.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Select시 예외발생");
+			e.printStackTrace();
+		}
+		return bbs;
+	}	
+	
 	public void close() {
 		try {
 			//사용된 자원이 있다면 자원해제 해준다.
@@ -170,7 +203,7 @@ public class BbsDAO {
 		//게시판, 회원 테이블을 조인하여 이름까지 가져와서 조회
 		String query = ""
 			+"SELECT "
-			+"    num, title, content, B.id, postdate, visitcount, name "
+			+"    num, title, content, B.id, postdate, visitcount, name, e_mail "
 			+" FROM membership M INNER JOIN board B "
 			+"    ON M.id=B.id "
 			+" WHERE num=? ";
@@ -185,11 +218,12 @@ public class BbsDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setPostdate(rs.getDate("postdate"));
 				dto.setId(rs.getString("id"));
-				dto.setVisitcount(rs.getString(6));		
+				dto.setVisitcount(rs.getString(6));
 				/*
 				member 테이블과 join하여 얻어온 name을 DTO에 추가함.
 				 */
 				dto.setName(rs.getString(7));
+				dto.setE_mail(rs.getString("e_mail"));
 			}
 		}
 		catch(Exception e) {
@@ -198,5 +232,84 @@ public class BbsDAO {
 		}
 
 		return dto;
+	}
+	
+	public int insertWrite(BbsDTO dto) {
+		int affected = 0;
+		try {
+			/*
+			데이터 입력을 위한 insert문 작성. 
+			MariaDB에서는 시퀀스 대신 자동증가 컬럼을 사용한다.
+			해당 컬럼을 auto_increment를 부여하게되면 레코드 삽입시
+			자동으로 증가하는 컬럼이 된다. insert문 작성시 해당 컬럼은
+			명시하지 않는다.
+			 */
+			String query = "INSERT INTO board ( "
+				+ " title,content,id,visitcount) "
+				+ " VALUES ( "
+				+ " ?, ?, ?, 0)";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getId());
+			
+			/*
+			쿼리문 실행시 사용하는 메소드
+			 	executeQuery() : select계열의 쿼리문을
+			 		실행할때 사용한다. 행에 영향을 주지않고
+			 		조회를 위해 사용된다. 반환타입은 ResultSet이다.
+			 	executeUpdate() : insert,delete,update
+			 		쿼리문을 실행할때 사용한다. 행에 영향을 주게되고
+			 		반환타입은 쿼리의 영향을 받은 행의 갯수가 반환되므로
+			 		int형이 된다. 			 
+			 */
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("insert중 예외발생");
+			e.printStackTrace();
+		}
+		return affected;
+	}
+	
+	public int delete(BbsDTO dto) {
+		int affected = 0;
+		try {
+			String query = "DELETE FROM board WHERE num=?";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getNum());
+
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("delete중 예외발생");
+			e.printStackTrace();
+		}
+
+		return affected;
+	}
+	
+	public int updateEdit(BbsDTO dto) {
+		int affected = 0;
+		try {
+			String query = "UPDATE board SET "
+					+ " title=?, content=? "
+					+ " WHERE num=?";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getNum());
+
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("update중 예외발생");
+			e.printStackTrace();
+		}
+
+		return affected;
 	}
 }

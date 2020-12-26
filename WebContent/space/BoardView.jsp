@@ -12,7 +12,13 @@ if(searchWord!=null){
 }
 //2페이지에서 상세보기 했다면 리스트로 돌아갈때도 페이지가 유지되어야 한다.
 String nowPage = request.getParameter("nowPage");
-queryStr += "&nowPage="+nowPage;
+
+if(nowPage==null){
+	queryStr += "&nowPage="+1;
+}
+else{
+	queryStr += "&nowPage="+nowPage;
+}
 
 
 //파라미터로 전송된 게시물의 일련번호를 받음
@@ -66,7 +72,7 @@ dao.close();
 		<th class="text-center" 
 			style="vertical-align:middle;">이메일</th>
 		<td>
-			nakjasabal@naver.com
+			<%=dto.getE_mail() %>
 		</td>
 		<th class="text-center" 
 			style="vertical-align:middle;">조회수</th>
@@ -95,7 +101,7 @@ dao.close();
 	</tr> -->
 </tbody>
 </table>
-
+</form>
 <div class="row text-right" style="float:right; margin-right:2px;">
 	<!-- 각종 버튼 부분 -->
 <%
@@ -132,7 +138,6 @@ if(session.getAttribute("USER_ID")!=null &&
 	<button type="button" class="btn btn-warning" 
 		onclick="location.href='BoardList.jsp?<%=queryStr %>';">리스트보기</button>
 </div>
-</form> 
 
 				</div>
 			</div>

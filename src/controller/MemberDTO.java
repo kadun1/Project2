@@ -6,6 +6,28 @@ public class MemberDTO {
 	private String name;
 	private java.sql.Date regidate;
 	private String mail;
+	private String zipcode;
+	private String address;
+	private String mobile;
+	
+	public String getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 	public String getId() {
 		return id;
 	}

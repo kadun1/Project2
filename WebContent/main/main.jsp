@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,7 +26,7 @@ function loginValidate(fn){
 }
 </script>
 </head>
-<body> <!-- onload="href=../main/main.do"-->
+<body>
 <center>
 	<div id="wrap">
 		<%@ include file="../include/top.jsp"%>
@@ -71,7 +72,7 @@ if(session.getAttribute("USER_ID")==null){
 					<p style="padding:10px 0px 10px 10px"><span style="font-weight:bold; color:#333;"><%=session.getAttribute("USER_NAME") %>님,</span> 반갑습니다.<br />로그인 하셨습니다.</p>
 					<p style="text-align:right; padding-right:10px;">
 						<a href=""><img src="../images/login_btn04.gif" /></a>
-						<a href="logout.jsp"><img src="../images/login_btn05.gif" /></a>
+						<a href="../member/logout.jsp"><img src="../images/login_btn05.gif" /></a>
 					</p>
 <% } %>
 				</form>
@@ -90,10 +91,11 @@ if(session.getAttribute("USER_ID")==null){
 			<div class="main_con_right">
 				<p class="main_title"><img src="../images/main_title03.gif" alt="자유게시판 FREE BOARD" /><a href="/space/sub03.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
 				<ul class="main_board_list">
-					<li><p><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></p></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지마포 구립 장애인 직업재활센터 홈페이지마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
+				<c:forEach items="${lists }" var="row" varStatus="loop">
+					<li><p style="width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+					<a href="../space/BoardView.jsp?num=${row.num }">${row.title }</a>
+					<span>${row.postdate }</span></p></li>
+				</c:forEach>
 				</ul>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,8 +15,13 @@ public class MainCtrl extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		
+		ServletContext app = this.getServletContext();
+		BbsDAO dao = new BbsDAO(app);
+		List<BbsDTO> lists = dao.selectMainPage();
 		Cookie[] cookies = req.getCookies();
-		String id ="", save="";
+		String save="";
 		if(cookies!=null){
 			for(Cookie ck : cookies){		
 				if(ck.getName().equals("SaveId")){
@@ -26,6 +32,8 @@ public class MainCtrl extends HttpServlet{
 				}			
 			}
 		}
+		req.setAttribute("lists", lists);
+		
 		req.getRequestDispatcher("/main/main.jsp").forward(req, resp);
 	}
 	
@@ -57,11 +65,11 @@ public class MainCtrl extends HttpServlet{
 			resp.sendRedirect("../main/main.do");
 		}
 		else {
-			resp.sendRedirect("loginfail.jsp");
+			resp.sendRedirect("../member/loginfail.jsp");
 		}
 	}
 
-	public static void makeCookie(HttpServletRequest req, 
+	public void makeCookie(HttpServletRequest req, 
 		HttpServletResponse resp, String cName, String cValue, int time){
 
 		//쿠키객체생성
@@ -73,7 +81,4 @@ public class MainCtrl extends HttpServlet{
 		//응답헤더에 쿠키추가 후 클라이언트로 전송
 		resp.addCookie(cookie);
 	}
-	
-	
-	
 }

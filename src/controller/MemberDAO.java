@@ -64,6 +64,42 @@ public class MemberDAO {
 	}
 	
 
+	public int registMember(MemberDTO dto) {
 		
+		int affected = 0;
+		try {
+			String sql = "INSERT INTO membership ( "
+				+ " id, pass, name, e_mail, address, "
+				+ " zipcode, mobile) VALUES ( "
+				+ " ?, ?, ?, ?, ?, ?, ?) ";
+			
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, dto.getId());
+			psmt.setString(2, dto.getPass());
+			psmt.setString(3, dto.getName());
+			psmt.setString(4, dto.getMail());
+			psmt.setString(5, dto.getAddress());
+			psmt.setString(6, dto.getZipcode());
+			psmt.setString(7, dto.getMobile());
+			
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("회원등록시 예외발생");
+			e.printStackTrace();
+		}
+		return affected;
+	}
 	
+	public void close() {
+		try {
+			//연결을 해제하는것이 아니고 풀에 다시 반납한다. 
+			if(rs!=null) rs.close();
+			if(psmt!=null) psmt.close();
+			if(con!=null) con.close();
+		}
+		catch (Exception e) {
+			System.out.println("자원반납시 예외발생");
+		}
+	}
 }
