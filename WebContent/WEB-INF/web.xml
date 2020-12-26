@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>Project2</display-name>
+
+  <!-- 차후 게시판에서 사용할 페이지 번호의 설정값 -->
+  <context-param><!-- 한 페이지에 출력할 게시물의 갯수 -->
+  	<param-name>PAGE_SIZE</param-name>
+  	<param-value>2</param-value>
+  </context-param>
+  <context-param><!-- 한 블럭당 출력할 페이지번호의 갯수 -->
+  	<param-name>BLOCK_PAGE</param-name>
+  	<param-value>2</param-value>
+  </context-param>
+
+
+  <!-- 컨텍스트 초기화 파라미터 : MariaDB 연결을 위한 정보 -->
+  <context-param>
+  	<param-name>MariaJDBCDriver</param-name>
+  	<param-value>org.mariadb.jdbc.Driver</param-value>
+  </context-param>
+    <context-param>
+  	<param-name>MariaConnectURL</param-name>
+  	<param-value>jdbc:mariadb://127.0.0.1:3306/suamil_db</param-value>
+  </context-param>
+   <context-param>
+  	<param-name>MariaUser</param-name>
+  	<param-value>suamil_user</param-value>
+  </context-param>
+   <context-param>
+  	<param-name>MariaPass</param-name>
+  	<param-value>1234</param-value>
+  </context-param>
+  
+  <session-config>
+  	<session-timeout>60</session-timeout>
+  </session-config>
+  
+  
+  
+  <servlet>
+    <servlet-name>ProjectMain</servlet-name>
+    <servlet-class>controller.MainCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProjectMain</servlet-name>
+    <url-pattern>/main/main.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
