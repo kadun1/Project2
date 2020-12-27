@@ -81,7 +81,7 @@ function velidateForm(frm){
 
     if(!(specialCheck==true&&numberCheck==true)){
         alert("비밀번호는 숫자와 특수기호가 포함되어야 합니다.")
-        frm.pwd.focus();
+        frm.pass.focus();
         return false;
     }
     if(frm.pass.value != frm.pass2.value){
@@ -91,6 +91,22 @@ function velidateForm(frm){
         frm.pass.focus();
         return false;
     }
+    if(frm.mobile2.value==""||frm.mobile3.value==""){
+    	alert("휴대폰 번호는 필수입니다.");
+    	frm.mobile2.focus();
+    	return false;
+    }
+    if(frm.email_1.value==""||frm.email_2.value==""){
+    	alert("이메일을 입력해주세요");
+    	frm.email_1.focus();
+    	return false;
+    }
+    if(frm.zipcode.value==""||frm.addr1.value==""){
+    	alert("주소를 입력해주세요");
+    	frm.addr1.focus();
+    	return false;
+    }
+    
 }
 
 function idCheck(){
