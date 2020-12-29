@@ -45,6 +45,7 @@ function loginValidate(fn){
 				</div>
 				<div class="login_box01">
 					<form action="../main/main.do" method="post" name="loginFrm" onsubmit="return loginValidate(this);" >
+					<input type="hid-den" name="returnURL" value="${param.returnURL}" size="50" />
 					<img src="../images/login_tit.gif" style="margin-bottom:30px;" />
 					<ul>
 						<li><img src="../images/login_tit001.gif" alt="아이디" style="margin-right:15px;" />

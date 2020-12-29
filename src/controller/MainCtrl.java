@@ -49,6 +49,7 @@ public class MainCtrl extends HttpServlet{
 		String drv = app.getInitParameter("MariaJDBCDriver");
 		String url = app.getInitParameter("MariaConnectURL");
 		String returnURL = req.getParameter("returnURL");
+		System.out.println(returnURL);
 		MemberDAO dao = new MemberDAO(drv, url);
 		
 		MemberDTO memberDTO = dao.getMemberDTO(id, pw);

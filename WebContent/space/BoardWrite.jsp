@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
-
+<%@ include file="../member/isLogin.jsp" %>
 <script>
 	/* 연습문제] 글쓰기 폼에 빈값이 있는경우 서버로 전송되지
 			않도록 아래 validate()함수를 완성하시오.
