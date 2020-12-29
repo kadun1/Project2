@@ -48,6 +48,7 @@ public class MainCtrl extends HttpServlet{
 		String id_save = req.getParameter("id_save");
 		String drv = app.getInitParameter("MariaJDBCDriver");
 		String url = app.getInitParameter("MariaConnectURL");
+		String returnURL = req.getParameter("returnURL");
 		MemberDAO dao = new MemberDAO(drv, url);
 		
 		MemberDTO memberDTO = dao.getMemberDTO(id, pw);
@@ -62,7 +63,14 @@ public class MainCtrl extends HttpServlet{
 			else {
 				makeCookie(req, resp, "SaveId", id, 60*60);				
 			}
-			resp.sendRedirect("../main/main.do");
+			if(returnURL.equals("")||returnURL==null){
+				resp.sendRedirect("../main/main.do");
+			}
+			else{
+				//세션이 없어 진입하지 못한 페이지로 이동한다.
+				resp.sendRedirect(returnURL);
+			}
+
 		}
 		else {
 			resp.sendRedirect("../member/loginfail.jsp");
