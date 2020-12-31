@@ -2,7 +2,8 @@
 <%@page import="controller.BbsDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../include/global_head.jsp" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="isLogin.jsp" %>
 <%
 String queryStr = "";
 String searchColumn = request.getParameter("searchColumn");
@@ -20,40 +21,33 @@ else{
 	queryStr += "&nowPage="+nowPage;
 }
 
-
 //파라미터로 전송된 게시물의 일련번호를 받음
 String num = request.getParameter("num");
 String btype = request.getParameter("btype");
-queryStr += "&btype="+btype;
+queryStr += "&btype=" + btype;
 BbsDAO dao = new BbsDAO(application);
-
-//조회수를 업데이트하여 visitcount컬럼을 1증가시킴
-dao.updateVisitCount(num);
 
 //일련번호에 해당하는 게시물을 DTO객체로 반환함
 BbsDTO dto = dao.selectView(num, btype);
 
 dao.close();
 %>
+<!DOCTYPE html>
+<html lang="en">
+<%@ include file="./include/head.jsp" %>
+<body id="page-top">
+<%@ include file="./include/navbar.jsp" %>
+  <div id="wrapper">
+	<%@ include file="./include/sidebar.jsp" %>
 
- <body>
-	<div id="wrap">
-		<%@ include file="../include/top.jsp" %>
+    <div id="content-wrapper">
 
-		<img src="../images/space/sub_image.jpg" id="main_visual" />
-
-		<div class="contents_box">
-			<div class="left_contents">
-				<%@ include file = "../include/space_leftmenu.jsp" %>
-			</div>
-			<div class="right_contents">
-				<div class="top_title">
-					<img src="../images/space/sub${param.btype }.gif" alt="자유게시판" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
-				</div>
-				<div>
-
-<form enctype="multipart/form-data">
+      <div class="container-fluid">
+        <!-- Page Content -->
+        <h1>상세보기</h1>
+        <hr>
+		<div>
+		<form enctype="multipart/form-data">
 <table class="table table-bordered">
 <colgroup>
 	<col width="20%"/>
@@ -104,52 +98,50 @@ dao.close();
 </tbody>
 </table>
 </form>
-<!-- 각종 버튼 부분 -->
-<div class="row text-right" style="float:right; margin-right:2px;">
-<%if(!btype.equals("0")){
-
-/*
-로그인이 완료된 상태에서만 수정/삭제 버튼을 보이게하고, 
-또한 작성자에게만 노출되도록 한다. 작성자가 아니라면 
-버튼은 숨김처리된다. 
-*/
-if(session.getAttribute("USER_ID")!=null &&
-	session.getAttribute("USER_ID").toString().equals(dto.getId())){
-%>
-	<button type="button" class="btn btn-primary"
-		onclick="location.href='BoardEdit.jsp?num=<%=dto.getNum()%>&btype=${param.btype }';">수정하기</button>
-	<button type="button" class="btn btn-success"
-		onclick="isDelete();">삭제하기</button>
-<%
-}
-%>
+<div style="float:right;">
 <form name="deleteFrm">
 	<input type="hidden" name="num" value="<%=dto.getNum() %>" />
-	<input type="hidden" name="btype" value="<%=dto.getBtype() %>" />
+	<input type="hidden" name="btype" value="${param.btype }" />
 </form>
+	<button type="button" class="btn btn-primary"
+		onclick="location.href='edit.jsp?num=<%=dto.getNum()%>&btype=${param.btype }';">수정하기</button>
+	<button type="button" class="btn btn-success"
+		onclick="isDelete();">삭제하기</button>
 <script>
-	function isDelete(){
-		var c = confirm("삭제할까요?");
-		if(c){
-			var f = document.deleteFrm;
-			f.method = "post";
-			f.action = "DeleteProc.jsp"
-			f.submit();
-		}
+function isDelete(){
+	var c = confirm("삭제할까요?");
+	if(c){
+		var f = document.deleteFrm;
+		f.method = "post";
+		f.action = "DeleteProc.jsp"
+		f.submit();
 	}
-</script>
-<%} %>		 		
+}
+</script>		 		
 	<button type="button" class="btn btn-warning" 
-		onclick="location.href='BoardList.jsp?<%=queryStr %>';">리스트보기</button>
-</div>
-
-				</div>
-			</div>
+		onclick="location.href='board.jsp?<%=queryStr %>';">리스트보기</button>	
 		</div>
-		<%@ include file="../include/quick.jsp" %>
-	</div>
+      </div>
+      <!-- /.container-fluid -->
+</div>
+<%@ include file="./include/footer.jsp" %>
 
+    </div>
+    <!-- /.content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+<%@ include file="./include/bottom.jsp" %>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-	<%@ include file="../include/footer.jsp" %>
- </body>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
+</body>
+
 </html>
+    

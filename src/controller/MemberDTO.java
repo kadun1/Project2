@@ -9,7 +9,14 @@ public class MemberDTO {
 	private String zipcode;
 	private String address;
 	private String mobile;
+	private String grade;
 	
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
 	public String getZipcode() {
 		return zipcode;
 	}

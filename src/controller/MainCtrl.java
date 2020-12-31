@@ -20,6 +20,7 @@ public class MainCtrl extends HttpServlet{
 		ServletContext app = this.getServletContext();
 		BbsDAO dao = new BbsDAO(app);
 		List<BbsDTO> lists = dao.selectMainPage();
+		List<BbsDTO> notices = dao.selectMainNotice();
 		Cookie[] cookies = req.getCookies();
 		String save="";
 		if(cookies!=null){
@@ -33,12 +34,14 @@ public class MainCtrl extends HttpServlet{
 			}
 		}
 		req.setAttribute("lists", lists);
+		req.setAttribute("notices", notices);
 		
 		req.getRequestDispatcher("/main/main.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		req.setCharacterEncoding("UTF-8");
 		
 		ServletContext app = this.getServletContext();
@@ -49,26 +52,29 @@ public class MainCtrl extends HttpServlet{
 		String drv = app.getInitParameter("MariaJDBCDriver");
 		String url = app.getInitParameter("MariaConnectURL");
 		String returnURL = req.getParameter("returnURL");
-		System.out.println(returnURL);
 		MemberDAO dao = new MemberDAO(drv, url);
 		
 		MemberDTO memberDTO = dao.getMemberDTO(id, pw);
-		
+		System.out.println("아이디:"+memberDTO.getId()+" 등급:"+memberDTO.getGrade());
 		if(memberDTO.getId()!=null) {
 			session.setAttribute("USER_ID", memberDTO.getId());
 			session.setAttribute("USER_PW", memberDTO.getPass());
 			session.setAttribute("USER_NAME", memberDTO.getName());
+			session.setAttribute("USER_GRADE", memberDTO.getGrade());
 			if(id_save==null) {
 				makeCookie(req, resp, "SaveId", "", 0);
 			}
 			else {
 				makeCookie(req, resp, "SaveId", id, 60*60);				
 			}
-			if(returnURL.equals("")||returnURL==null){
+			if(returnURL==null||returnURL.equals("")){
+				System.out.println(returnURL);
+				System.out.println(req.getParameter("returnURL"));
 				resp.sendRedirect("../main/main.do");
 			}
 			else{
 				//세션이 없어 진입하지 못한 페이지로 이동한다.
+				
 				resp.sendRedirect(returnURL);
 			}
 

@@ -34,7 +34,7 @@ public class MemberDAO {
 		MemberDTO dto = new MemberDTO();
 		
 		//회원정보를 가져오기 위한 쿼리문 작성
-		String query = "SELECT id, pass, name FROM "
+		String query = "SELECT id, pass, name, grade FROM "
 				+ " membership WHERE id=? AND pass=?";
 		try {
 			//prepare객체생성
@@ -50,6 +50,7 @@ public class MemberDAO {
 				dto.setId(rs.getString("id"));
 				dto.setPass(rs.getString("pass"));
 				dto.setName(rs.getString(3));
+				dto.setGrade(rs.getString("grade"));
 			}
 			else {
 				System.out.println("결과셋이 없습니다.");
@@ -63,7 +64,6 @@ public class MemberDAO {
 		return dto;
 	}
 	
-
 	public int registMember(MemberDTO dto) {
 		
 		int affected = 0;
@@ -91,6 +91,25 @@ public class MemberDAO {
 		return affected;
 	}
 	
+	public int idCheck(String id) {
+		
+		int affected = 0;
+		String sql = " SELECT COUNT(*) FROM membership "
+					+ " WHERE id = ? ";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, id);
+			rs = psmt.executeQuery();
+			rs.next();
+			affected = rs.getInt(1);
+		}
+		catch(Exception e) {
+			System.out.println("아이디체크중 예외발생");
+		}
+		return affected;	
+	}
+	
 	public void close() {
 		try {
 			//연결을 해제하는것이 아니고 풀에 다시 반납한다. 
@@ -101,5 +120,48 @@ public class MemberDAO {
 		catch (Exception e) {
 			System.out.println("자원반납시 예외발생");
 		}
+	}
+	
+	public String idFind(String name, String email) {
+		String findid = "";
+		String sql = " SELECT id FROM membership "
+				+ " WHERE name = ? AND e_mail = ? ";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, name);
+			psmt.setString(2, email);			
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				findid = rs.getString(1);
+				System.out.println("아이디:"+findid);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("아이디 찾기중 예외발생");
+			e.printStackTrace();
+		}
+		return findid;	
+	}
+	
+	public String pwFind(String id, String name, String email) {
+		String findpw = "";
+		String sql = " SELECT pass FROM membership "
+				+ " WHERE id= ? AND name = ? AND e_mail = ? ";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, name);
+			psmt.setString(3, email);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				findpw = rs.getString(1);				
+			}
+		}
+		catch(Exception e) {
+			System.out.println("비번찾기중 예외발생");
+			e.printStackTrace();
+		}
+		return findpw;
 	}
 }

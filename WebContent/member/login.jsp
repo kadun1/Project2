@@ -45,17 +45,19 @@ function loginValidate(fn){
 				</div>
 				<div class="login_box01">
 					<form action="../main/main.do" method="post" name="loginFrm" onsubmit="return loginValidate(this);" >
-					<input type="hid-den" name="returnURL" value="${param.returnURL}" size="50" />
 					<img src="../images/login_tit.gif" style="margin-bottom:30px;" />
 					<ul>
 						<li><img src="../images/login_tit001.gif" alt="아이디" style="margin-right:15px;" />
 						<input type="text" name="user_id" value='<%=(save.length()==0) ? "" : save %>' class="login_input01" /></li>
 						<li><img src="../images/login_tit002.gif" alt="비밀번호" style="margin-right:15px;" />
 						<input type="text" name="user_pw" value="" class="login_input01" /></li>
+						
 						<div width=0 height=0 style="visibility:hidden">
+						<input type="hidden" name="returnURL" value="${param.returnURL}" size="10" />
 						<input type="checkbox" name="id_save" value="Y" tabindex="3"
 						<%if(save.length()!=0){ %> checked='checked' <% } %>  />
 						</div>
+						
 					</ul>
 					<input type="image" src="../images/login_btn.gif" class="login_btn01" />
 					</form>

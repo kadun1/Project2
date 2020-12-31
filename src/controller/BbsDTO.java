@@ -10,7 +10,28 @@ public class BbsDTO {
 	private String visitcount;//조회수
 	private String name;
 	private String e_mail;
+	private String btype;
+	private String sfile;
+	private String ofile;
 	
+	public String getSfile() {
+		return sfile;
+	}
+	public void setSfile(String sfile) {
+		this.sfile = sfile;
+	}
+	public String getOfile() {
+		return ofile;
+	}
+	public void setOfile(String ofile) {
+		this.ofile = ofile;
+	}
+	public String getBtype() {
+		return btype;
+	}
+	public void setBtype(String btype) {
+		this.btype = btype;
+	}
 	public String getE_mail() {
 		return e_mail;
 	}

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <script>
-alert("로그인 실패. 회원정보가 없습니다.")
-history.back();
+alert("로그인 실패. 관리자 계정이 아닙니다.")
+location.href="login.jsp";
 </script>
 

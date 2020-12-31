@@ -22,6 +22,9 @@ Map<String, Object> param = new HashMap<String, Object>();
 String queryStr = "";
 String searchColumn = request.getParameter("searchColumn");
 String searchWord = request.getParameter("searchWord");
+String btype = request.getParameter("btype");
+
+param.put("btype", btype);
 
 if(searchWord!=null){
 	
@@ -31,7 +34,7 @@ if(searchWord!=null){
 	queryStr += "searchColumn="+searchColumn
 			 +"&searchWord="+searchWord+"&";
 }
-
+queryStr += "btype="+btype+"&";
 int totalRecordCount = dao.getTotalRecordCountSearch(param);//조인사용
 
 int pageSize = Integer.parseInt(
@@ -70,7 +73,7 @@ dao.close();
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/space/sub03_title.gif" alt="자유게시판" class="con_title" />
+					<img src="../images/space/sub${param.btype}.gif" alt="자유게시판" class="con_title" />
 					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;자유게시판<p>
 				</div>
 				<div class="center_contents">
@@ -141,7 +144,7 @@ dao.close();
  				<tr>
 					<td class="text-center"><%= vNum %></td>
 					<td class="text-left">
-						<a href="BoardView.jsp?num=<%=dto.getNum() %>&nowPage=<%=nowPage %>&<%=queryStr %>"><%=dto.getTitle() %></a>
+						<a href="BoardView.jsp?num=<%=dto.getNum() %>&nowPage=<%=nowPage %>&<%=queryStr %>&btype=${param.btype}"><%=dto.getTitle() %></a>
 					</td>
 					<td class="text-center"><%=dto.getName() %></td>
 					<td class="text-center"><%=dto.getPostdate() %></td>
@@ -154,10 +157,12 @@ dao.close();
 		%>
 					</tbody>			
 				</table>
+		<%if(!btype.equals("0")){ %>
 				<div align=right>
 				<button type="button" class="btn btn-primary" 
-						onclick="location.href='BoardWrite.jsp';">글쓰기</button>
+						onclick="location.href='BoardWrite.jsp?btype=<%=btype%>';">글쓰기</button>
 				</div>
+		<%} %>
 				</div>
 			<div>
 			<div class="col">

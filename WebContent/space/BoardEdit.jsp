@@ -8,12 +8,13 @@
 <%
 //파라미터로 전송된 게시물의 일련번호를 받음
 String num = request.getParameter("num");
+String btype = request.getParameter("btype");
 BbsDAO dao = new BbsDAO(application);
 
 //본인이 작성한 게시물이므로 조회수 증가는 의미없음.
 
 //일련번호에 해당하는 게시물을 DTO객체로 반환함
-BbsDTO dto = dao.selectView(num);
+BbsDTO dto = dao.selectView(num, btype);
 
 //본인확인 후 작성자가 아니면 뒤로보내기
 if(!session.getAttribute("USER_ID").toString().equals(dto.getId())){
@@ -25,10 +26,8 @@ dao.close();
 %>
 <script>
 	/* 연습문제] 글쓰기 폼에 빈값이 있는경우 서버로 전송되지
-			않도록 아래 validate()함수를 완성하시오.
-			모든 값이 입력되었다면 WriteProc.jsp로 
-			submit되어야 한다.
-	*/
+	않도록 아래 validate()함수를 완성하시오.
+	모든 값이 입력되었다면 WriteProc.jsp로 	submit되어야 한다.*/
 	function checkValidate(fm){
 		if(fm.title.value==""){
 			alert("제목을 입력하세요."); 
@@ -54,7 +53,7 @@ dao.close();
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/space/sub03_title.gif" alt="공지사항" class="con_title" />
+					<img src="../images/space/sub${param.btype }.gif" alt="공지사항" class="con_title" />
 					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
 				</div>
 				<div>
@@ -62,6 +61,7 @@ dao.close();
 <form name="writeFrm" method="post" action="EditProc.jsp"
 	onsubmit="return checkValidate(this);">
 <input type="hidden" name="num" value="<%=num %>" />
+<input type="hidden" name="btype" value="<%=btype %>" />
 <table class="table table-bordered">
 <colgroup>
 	<col width="20%"/>
@@ -124,7 +124,7 @@ dao.close();
 	<button type="submit" class="btn btn-danger">전송하기</button>
 	<button type="reset" class="btn">Reset</button>
 	<button type="button" class="btn btn-warning" 
-		onclick="location.href='BoardList.jsp';">리스트보기</button>
+		onclick="location.href='BoardList.jsp?btype=<%=btype %>';">리스트보기</button>
 </div>
 </form> 
 

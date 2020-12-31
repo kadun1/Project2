@@ -29,7 +29,7 @@ if(affected==1){
 	새로운 게시물이 작성되었으므로 확인을 위해
 	리스트의 첫번째 페이지로 이동해야 한다. 
 	*/
-	response.sendRedirect("BoardList.jsp?btype="+btype);
+	response.sendRedirect("board.jsp?btype="+btype);
 }
 else{
 %>

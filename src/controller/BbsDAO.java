@@ -50,13 +50,14 @@ public class BbsDAO {
 		int totalCount = 0;
 		
 		//기본쿼리문(전체레코드를 대상으로 함)
-		String query = "SELECT COUNT(*) FROM board B "
+		String query = "SELECT COUNT(*) FROM multi_board B "
 				+ " 		INNER JOIN membership M "
-				+ "				ON B.id=M.id ";
+				+ "				ON B.id=M.id "
+				+ " WHERE btype="+map.get("btype")+" ";
 		
 		//JSP페이지에서 검색어를 입력한 경우 where절이 동적으로 추가된다.
 		if(map.get("Word")!=null) {
-			query += " WHERE "+ map.get("Column") +" "
+			query += " AND "+ map.get("Column") +" "
 					+ " LIKE '%"+ map.get("Word") +"%'";
 		}
 		System.out.println("query="+query);
@@ -78,11 +79,12 @@ public class BbsDAO {
 
 		//쿼리문이 아래와같이 페이지처리 쿼리문으로 변경됨.
 		String query = " "	
-			+"		SELECT B.*, M.name FROM board B " 
+			+"		SELECT B.*, M.name FROM multi_board B " 
 			+"         INNER JOIN membership M "
-			+"           ON B.id=M.id " ;
+			+"           ON B.id=M.id " 
+			+" WHERE btype="+map.get("btype")+" ";
 		if(map.get("Word")!=null) {
-			query +="      WHERE "+map.get("Column")
+			query +="  AND "+map.get("Column")
 					+" LIKE '%"+map.get("Word")+"%' ";
 		}			
 		query +="		ORDER BY num DESC LIMIT ?, ?";
@@ -116,6 +118,8 @@ public class BbsDAO {
 				
 				//member테이블과의 JOIN으로 이름이 추가됨
 				dto.setName(rs.getString("name"));
+				//게시판타입 받기
+				dto.setBtype(rs.getString("btype"));
 
 				bbs.add(dto);
 			}
@@ -132,7 +136,40 @@ public class BbsDAO {
 
 		//쿼리문이 아래와같이 페이지처리 쿼리문으로 변경됨.
 		String query = " "	
-			+"		SELECT num, title, postdate FROM board  " 
+			+"		SELECT num, title, postdate FROM multi_board "
+			+" WHERE btype = 1 "
+			+" ORDER BY num DESC LIMIT 0, 4";
+			
+		System.out.println("쿼리문:"+ query);
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+
+			while(rs.next()) {
+				BbsDTO dto = new BbsDTO();
+
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setPostdate(rs.getDate("postdate"));
+				
+				bbs.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Select시 예외발생");
+			e.printStackTrace();
+		}
+		return bbs;
+	}	
+
+	public List<BbsDTO> selectMainNotice() {
+		List<BbsDTO> bbs = new ArrayList<BbsDTO>();
+
+		//쿼리문이 아래와같이 페이지처리 쿼리문으로 변경됨.
+		String query = " "	
+			+"		SELECT num, title, postdate FROM multi_board "
+			+" WHERE btype = 0 "
 			+" ORDER BY num DESC LIMIT 0, 4";
 			
 		System.out.println("쿼리문:"+ query);
@@ -172,7 +209,7 @@ public class BbsDAO {
 	
 	public void updateVisitCount(String num) {
 		
-		String query = "UPDATE board SET "
+		String query = "UPDATE multi_board SET "
 			+ " visitcount=visitcount+1 "
 			+ " WHERE num=?";
 		System.out.println("조회수증가:"+query);
@@ -193,7 +230,7 @@ public class BbsDAO {
 		}
 	}
 	
-	public BbsDTO selectView(String num) {
+	public BbsDTO selectView(String num, String btype) {
 
 		BbsDTO dto = new BbsDTO();
 		
@@ -203,14 +240,15 @@ public class BbsDAO {
 		//게시판, 회원 테이블을 조인하여 이름까지 가져와서 조회
 		String query = ""
 			+"SELECT "
-			+"    num, title, content, B.id, postdate, visitcount, name, e_mail "
-			+" FROM membership M INNER JOIN board B "
+			+"    num, title, content, B.id, postdate, visitcount, name, e_mail, btype "
+			+" FROM membership M INNER JOIN multi_board B "
 			+"    ON M.id=B.id "
-			+" WHERE num=? ";
+			+" WHERE num=? AND btype=? ";
 
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, num);
+			psmt.setString(2, btype);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				dto.setNum(rs.getString(1));
@@ -224,6 +262,8 @@ public class BbsDAO {
 				 */
 				dto.setName(rs.getString(7));
 				dto.setE_mail(rs.getString("e_mail"));
+				dto.setBtype(rs.getString(9));
+				System.out.println(dto.getBtype());
 			}
 		}
 		catch(Exception e) {
@@ -244,15 +284,16 @@ public class BbsDAO {
 			자동으로 증가하는 컬럼이 된다. insert문 작성시 해당 컬럼은
 			명시하지 않는다.
 			 */
-			String query = "INSERT INTO board ( "
-				+ " title,content,id,visitcount) "
+			String query = "INSERT INTO multi_board ( "
+				+ " title,content,id,visitcount,btype) "
 				+ " VALUES ( "
-				+ " ?, ?, ?, 0)";
+				+ " ?, ?, ?, 0, ?)";
 
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getId());
+			psmt.setString(4, dto.getBtype());
 			
 			/*
 			쿼리문 실행시 사용하는 메소드
@@ -262,7 +303,7 @@ public class BbsDAO {
 			 	executeUpdate() : insert,delete,update
 			 		쿼리문을 실행할때 사용한다. 행에 영향을 주게되고
 			 		반환타입은 쿼리의 영향을 받은 행의 갯수가 반환되므로
-			 		int형이 된다. 			 
+			 		int형이 된다.
 			 */
 			affected = psmt.executeUpdate();
 		}
@@ -276,11 +317,11 @@ public class BbsDAO {
 	public int delete(BbsDTO dto) {
 		int affected = 0;
 		try {
-			String query = "DELETE FROM board WHERE num=?";
+			String query = "DELETE FROM multi_board WHERE num=? ";
 
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getNum());
-
+			
 			affected = psmt.executeUpdate();
 		}
 		catch(Exception e) {
@@ -294,9 +335,9 @@ public class BbsDAO {
 	public int updateEdit(BbsDTO dto) {
 		int affected = 0;
 		try {
-			String query = "UPDATE board SET "
+			String query = "UPDATE multi_board SET "
 					+ " title=?, content=? "
-					+ " WHERE num=?";
+					+ " WHERE num=? ";
 
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
@@ -304,6 +345,31 @@ public class BbsDAO {
 			psmt.setString(3, dto.getNum());
 
 			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("update중 예외발생");
+			e.printStackTrace();
+		}
+
+		return affected;
+	}
+	
+	public int adminUpdateEdit(BbsDTO dto) {
+		int affected = 0;
+		try {
+			String query = " UPDATE multi_board B "
+					+ " INNER JOIN membership M "
+					+ " ON B.id=M.id SET "
+					+ " title=?, content=?, e_mail=? "
+					+ " WHERE num = ? ";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getE_mail());
+			psmt.setString(4, dto.getNum());
+			affected = psmt.executeUpdate();
+			System.out.println(affected);
 		}
 		catch(Exception e) {
 			System.out.println("update중 예외발생");
