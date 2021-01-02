@@ -38,13 +38,11 @@ emailContent.put("content", mailContents);
 if(findpw != null){
 	boolean emailResult = smtp.emailSending(emailContent);
 	if(emailResult==true){
-		out.print("메일발송성공");
+		JavascriptUtil.jsAlertLocation("메일발송성공", "../main/main.do;");
 	}
 	else{
-		out.print("메일발송실패");
+		JavascriptUtil.jsAlertBack("메일발송실패ㅜㅜ", out);
 	}
-	JavascriptUtil.jsAlertBack("비번 : "+findpw, out);
-	return;
+	//return;
 	}
-
 %>

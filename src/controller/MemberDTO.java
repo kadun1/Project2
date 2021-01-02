@@ -1,6 +1,7 @@
 package controller;
 
 public class MemberDTO {
+	private String num;
 	private String id;
 	private String pass;
 	private String name;
@@ -11,6 +12,12 @@ public class MemberDTO {
 	private String mobile;
 	private String grade;
 	
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
 	public String getGrade() {
 		return grade;
 	}

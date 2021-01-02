@@ -31,12 +31,12 @@ function numFocus(obj, mLenght, next_obj){
 function email_input(domain){
     var str = domain.value;
     if(str=="self"){
-    	document.getElementById("email_2").value = "";
+    	document.getElementsByName("email_2")[0].value = "";
     	$("#email_2").attr("readonly", false); 
     }
     else{
     	$("#email_2").attr("readonly", true); 
-	    document.getElementById("email_2").value = str;	
+	    document.getElementsByName("email_2")[0].value = str;	
     }
 }
 
@@ -107,11 +107,6 @@ function velidateForm(frm){
     	return false;
     }
     
-    var mailCheck = document.getElementsByName("open_email")[0];
-    if(mailCheck.checked==false){
-    	alert("메일 수신에 동의하셔야 합니다.")
-    	return false;
-    }
 }
 
 function idCheck(){
@@ -219,7 +214,7 @@ function idCheck(){
 						<td>
  
 	<input type="text" name="email_1" style="width:100px;height:20px;border:solid 1px #dadada;" value="" /> @ 
-	<input type="text" id="email_2" style="width:150px;height:20px;border:solid 1px #dadada;" value="" readonly />
+	<input type="text" id="email_2" name="email_2" style="width:150px;height:20px;border:solid 1px #dadada;" value="" readonly />
 	<select name="last_email_check2" onChange="email_input(this);" class="pass" id="last_email_check2" >
 		<option selected="" value="">선택해주세요</option>
 		<option value="self" >직접입력</option>
@@ -244,7 +239,7 @@ function idCheck(){
 		<option value="yahoo.com" >yahoo.com</option>
 	</select>
 	 
-						<input type="checkbox" name="open_email" id="open_email" value="1">
+						<input type="checkbox" name="open_email" value="1">
 						<span>이메일 수신동의</span></td>
 					</tr>
 					<tr>

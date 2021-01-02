@@ -74,11 +74,13 @@ dao.close();
 			<div class="right_contents">
 				<div class="top_title">
 					<img src="../images/space/sub${param.btype}.gif" alt="자유게시판" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;자유게시판<p>
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;
+					<%if(btype.equals("0")){ %>공지사항<%}else if(btype.equals("1")){ %>	자유게시판<%}else{ %><%} %><p>
 				</div>
 				<div class="center_contents">
 					<nav class="navbar navbar-expand-sm bg-white navbar-dark">
-					  <form class="form-inline ml-auto" action="/action_page.php">
+					  <form class="form-inline ml-auto">
+					  <input type="hidden" name="btype" value="${param.btype }" />
 					  	<select name="searchColumn" class="form-control" id=>
 					  		<option value="title"
 					  		<%=(searchColumn!=null && searchColumn.equals("title")) ?

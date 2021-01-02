@@ -16,9 +16,17 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <h6 class="dropdown-header">Login Screens:</h6>
+<%
+if(session.getAttribute("USER_ID")==null){
+%>
           <a class="dropdown-item" href="login.jsp">Login</a>
           <a class="dropdown-item" href="register.jsp">Register</a>
           <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+<%} else { %>
+		<a class="dropdown-item" href="logout.jsp">Logout</a>
+          <a class="dropdown-item" href="memctrl.jsp">회원관리</a>
+          <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+<% } %>
         </div>
       </li>
       <li class="nav-item">

@@ -50,7 +50,7 @@
 .tab_menu li{float:left;}
 
 /*member*/
-.login_box01{width:620px; height:145px; *height:185px; padding-top:40px; padding-left:25px; margin-left:50px; margin-top:50px; margin-bottom:30px; position:relative; border-top:2px solid #fab5a3; border-bottom:1px solid #d8d8d8; background:url(../images/login_bg.jpg) 395px 13px no-repeat}
+.login_box01{width:620px; height:180px; *height:185px; padding-top:40px; padding-left:25px; margin-left:50px; margin-top:50px; margin-bottom:30px; position:relative; border-top:2px solid #fab5a3; border-bottom:1px solid #d8d8d8; background:url(../images/login_bg.jpg) 395px 13px no-repeat}
 .login_box01 li{padding-bottom:8px;}
 .login_input01{border:1px solid #dcdcdc; background:#f7f7f7; padding:2px; width:149px; height:19px;}
 .login_btn01{position:absolute; top:102px; left:285px;}

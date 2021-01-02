@@ -44,7 +44,7 @@ function loginValidate(fn){
 					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;멤버쉽&nbsp;>&nbsp;로그인<p>
 				</div>
 				<div class="login_box01">
-					<form action="../main/main.do" method="post" name="loginFrm" onsubmit="return loginValidate(this);" >
+				<form action="../main/main.do" method="post" name="loginFrm" onsubmit="return loginValidate(this);" >
 					<img src="../images/login_tit.gif" style="margin-bottom:30px;" />
 					<ul>
 						<li><img src="../images/login_tit001.gif" alt="아이디" style="margin-right:15px;" />
@@ -60,9 +60,9 @@ function loginValidate(fn){
 						
 					</ul>
 					<input type="image" src="../images/login_btn.gif" class="login_btn01" />
-					</form>
+				</form>
 				</div>
-				<p style="text-align:center; margin-bottom:50px;"><a href=""><img src="../images/login_btn02.gif" alt="아이디/패스워드찾기" /></a>&nbsp;<a href=""><img src="../images/login_btn03.gif" alt="회원가입" /></a></p>
+				<p style="text-align:center; margin-bottom:50px;"><a href="../member/id_pw.jsp"><img src="../images/login_btn02.gif" alt="아이디/패스워드찾기" /></a>&nbsp;<a href=""><img src="../images/login_btn03.gif" alt="회원가입" /></a></p>
 			</div>
 		</div>
 		<%@ include file="../include/quick.jsp" %>

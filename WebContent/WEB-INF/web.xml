@@ -11,6 +11,10 @@
   	<param-name>BLOCK_PAGE</param-name>
   	<param-value>5</param-value>
   </context-param>
+  <context-param><!-- 한 페이지에 출력할 게시물의 갯수 -->
+  	<param-name>IMAGEPAGE_SIZE</param-name>
+  	<param-value>6</param-value>
+  </context-param>
 
 
   <!-- 컨텍스트 초기화 파라미터 : MariaDB 연결을 위한 정보 -->
@@ -54,10 +58,17 @@
     <servlet-name>AdminLogin</servlet-name>
     <url-pattern>/admin/login.do</url-pattern>
   </servlet-mapping>
+  <!-- 파일 다운로드 -->
+  <servlet>
+    <servlet-name>imgDownload</servlet-name>
+    <servlet-class>controller.DownloadCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>imgDownload</servlet-name>
+    <url-pattern>/space/download.do</url-pattern>
+  </servlet-mapping>
+  
 
-  
-  
-  
   
   
   <welcome-file-list>

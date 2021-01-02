@@ -9,5 +9,5 @@
 	//세션영역 전체를 한꺼번에 삭제
 	session.invalidate();
 
-	response.sendRedirect("../main/main.do");
+	response.sendRedirect("../admin/index.jsp");
 %>

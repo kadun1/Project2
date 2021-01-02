@@ -87,7 +87,7 @@ public class BbsDAO {
 			query +="  AND "+map.get("Column")
 					+" LIKE '%"+map.get("Word")+"%' ";
 		}			
-		query +="		ORDER BY num DESC LIMIT ?, ?";
+		query +="		ORDER BY B.num DESC LIMIT ?, ?";
 			
 		System.out.println("쿼리문:"+ query);
 		
@@ -115,12 +115,15 @@ public class BbsDAO {
 				dto.setPostdate(rs.getDate("postdate"));
 				dto.setId(rs.getString("id"));
 				dto.setVisitcount(rs.getString("visitcount"));
-				
 				//member테이블과의 JOIN으로 이름이 추가됨
 				dto.setName(rs.getString("name"));
 				//게시판타입 받기
 				dto.setBtype(rs.getString("btype"));
-
+				//파일명 받기(서버저장, 원본)
+				dto.setSfile(rs.getString("sfile"));
+				dto.setOfile(rs.getString("ofile"));
+				
+				
 				bbs.add(dto);
 			}
 		}
@@ -233,17 +236,16 @@ public class BbsDAO {
 	public BbsDTO selectView(String num, String btype) {
 
 		BbsDTO dto = new BbsDTO();
-		
+		System.out.println(num+" "+btype);
 		//게시판 테이블만 사용하여 게시물 조회
 		//String query = "SELECT * FROM board WHERE num=?";
 		
 		//게시판, 회원 테이블을 조인하여 이름까지 가져와서 조회
 		String query = ""
-			+"SELECT "
-			+"    num, title, content, B.id, postdate, visitcount, name, e_mail, btype "
-			+" FROM membership M INNER JOIN multi_board B "
-			+"    ON M.id=B.id "
-			+" WHERE num=? AND btype=? ";
+			+"SELECT B.*, M.name, M.e_mail "
+			+" FROM multi_board B INNER JOIN membership M "
+			+"    ON B.id=M.id "
+			+" WHERE B.num=? AND btype=? ";
 
 		try {
 			psmt = con.prepareStatement(query);
@@ -253,17 +255,21 @@ public class BbsDAO {
 			if(rs.next()) {
 				dto.setNum(rs.getString(1));
 				dto.setTitle(rs.getString(2));
-				dto.setContent(rs.getString("content"));
-				dto.setPostdate(rs.getDate("postdate"));
-				dto.setId(rs.getString("id"));
+				dto.setContent(rs.getString(3));
+				dto.setId(rs.getString(4));
+				dto.setPostdate(rs.getDate(5));
 				dto.setVisitcount(rs.getString(6));
+				dto.setBtype(rs.getString(7));
+				dto.setSfile(rs.getString(8));
+				dto.setOfile(rs.getString(9));
 				/*
-				member 테이블과 join하여 얻어온 name을 DTO에 추가함.
+				member 테이블과 join하여 얻어온 name과
+				e_mail을 DTO에 추가함.
 				 */
-				dto.setName(rs.getString(7));
-				dto.setE_mail(rs.getString("e_mail"));
-				dto.setBtype(rs.getString(9));
-				System.out.println(dto.getBtype());
+				dto.setName(rs.getString(10));
+				dto.setE_mail(rs.getString(11));
+				
+				System.out.println("게시판타입"+dto.getBtype());
 			}
 		}
 		catch(Exception e) {
@@ -361,7 +367,7 @@ public class BbsDAO {
 					+ " INNER JOIN membership M "
 					+ " ON B.id=M.id SET "
 					+ " title=?, content=?, e_mail=? "
-					+ " WHERE num = ? ";
+					+ " WHERE B.num = ? ";
 
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
@@ -377,5 +383,30 @@ public class BbsDAO {
 		}
 
 		return affected;
+	}
+	
+	public boolean isCorrectPassword(String id, String num) {
+		boolean isCorr = true;
+		try {
+			//게시물 아이디와 세션 아이디가 동일하면 카운트 1 아니면 0
+			String sql = " SELECT COUNT(*) FROM multi_board "
+					+ " INNER JOIN membership M ON "
+					+ " B.id = M.id "
+					+ " WHERE M.id=? AND B.num=? ";
+			
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, num);
+			rs = psmt.executeQuery();
+			rs.next();
+			if(rs.getInt(1)==0) {
+				isCorr = false;
+			}
+		}
+		catch(Exception e) {
+			System.out.println("수정, 삭제를 위한 아이디 검증 중 예외발생");
+			e.printStackTrace();
+		}
+		return isCorr;
 	}
 }
