@@ -31,7 +31,7 @@
 									</select>
 								</div>
 								<div class="input-group">
-									<input type="text" name="searchWord" class="form-control" />
+									<input type="text" name="searchWord" class="form-control mr-sm-1" />
 									<div class="input-group-btn">
 										<button type="submit" class="btn btn-danger">
 											<i class='fa fa-search' style='font-size: 20px'></i>
@@ -54,7 +54,7 @@
 											<c:if test="${i%j == 0 }">
 												<tr>
 											</c:if>
-											<td style="padding: 8px; padding-top: 1px;">
+											<td style="padding: 10px; padding-top: 1px;">
 												<div class="card" style="max-width: 233px; height: 320px;">
 													<a href="imageView.do?num=${row.num }&nowPage=${map.nowPage }&btype=${row.btype }
 			    										&searchColumn=${param.searchColumn }&&searchWord=${param.searchWord }">
@@ -63,7 +63,7 @@
 													<div class="card-body" style="text-align: center;">
 														<a href="../space/imageView.do?num=${row.num }&nowPage=${map.nowPage }&btype=${row.btype }
 		    												&searchColumn=${param.searchColumn }&&searchWord=${param.searchWord }">
-															<h4 class="card-title">${row.title }</h4>
+															<p class="card-title" style="font-size:1.2em; width:180px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">${row.title }</p>
 														</a>
 														 <span>작성자 : ${row.name }</span> <br /> <span>${row.postdate }</span>
 													</div>
@@ -79,6 +79,10 @@
 								</table>
 							</c:otherwise>
 						</c:choose>
+					</div>
+					<div align=right style="padding-right:8px;">
+						<button type="button" class="btn btn-primary" 
+							onclick="location.href='../space/imgWrite.do?btype=${param.btype}&nowPage=${map.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }';">글쓰기</button>
 					</div>
 					<div class="col">
 						<!-- 페이지번호 부분 -->

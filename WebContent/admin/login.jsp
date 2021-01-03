@@ -37,10 +37,10 @@
           </div>
           <div class="form-group">
             <div class="checkbox">
-              <label>
+              <!-- <label>
                 <input type="checkbox" value="remember-me">
                 	아이디 저장
-              </label>
+              </label> -->
             </div>
           </div>
           <input type="submit" class="btn btn-primary btn-block" value="Login">

@@ -68,6 +68,16 @@
     <url-pattern>/space/download.do</url-pattern>
   </servlet-mapping>
   
+  <!-- 이미지 게시판 수정 -->
+    <servlet>
+    <servlet-name>imgEdit</servlet-name>
+    <servlet-class>controller.ImgEditCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>imgEdit</servlet-name>
+    <url-pattern>/space/imgEdit.do</url-pattern>
+  </servlet-mapping>
+  
 
   
   

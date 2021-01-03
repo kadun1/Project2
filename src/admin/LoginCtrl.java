@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import controller.MemberDAO;
 import controller.MemberDTO;
 
-
 public class LoginCtrl extends HttpServlet{
 
 	@Override

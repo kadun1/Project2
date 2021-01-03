@@ -21,6 +21,7 @@ public class MainCtrl extends HttpServlet{
 		BbsDAO dao = new BbsDAO(app);
 		List<BbsDTO> lists = dao.selectMainPage();
 		List<BbsDTO> notices = dao.selectMainNotice();
+		List<BbsDTO> images = dao.selectMainImg();
 		Cookie[] cookies = req.getCookies();
 		String save="";
 		if(cookies!=null){
@@ -35,6 +36,7 @@ public class MainCtrl extends HttpServlet{
 		}
 		req.setAttribute("lists", lists);
 		req.setAttribute("notices", notices);
+		req.setAttribute("images", images);
 		
 		req.getRequestDispatcher("/main/main.jsp").forward(req, resp);
 	}

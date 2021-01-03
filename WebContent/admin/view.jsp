@@ -85,6 +85,10 @@ dao.close();
 		<th class="text-center" 
 			style="vertical-align:middle;">내용</th>
 		<td colspan="3">
+		<%if(dto.getBtype().equals("2")){ %>
+			<img src="../space/Upload/<%=dto.getSfile() %>" alt="이미지" />
+			<br />
+		<%} %>
 			<%=dto.getContent().replace("\r\n","<br/>") %>
 		</td>
 	</tr>

@@ -169,12 +169,24 @@ dao.close();
 					<td class="text-center"><%=dto.getPostdate() %></td>
 					<td class="text-center">
 		            	<button type="button" style="font-size:8px;"
-		            		onclick="location.href='edit.jsp?btype=<%=btype %>'" >수정</button>
+		            		onclick="location.href='edit.jsp?num=<%=dto.getNum() %>&btype=<%=btype %>'" >수정</button>
 					</td>
+					<form name="deleteFrm" action="DeleteProc.jsp" onsubmit="return isDelete();">
+						<input type="hidden" name="num" value="<%=dto.getNum() %>" />
+						<input type="hidden" name="btype" value="${param.btype }" />
 					<td class="text-center">
-              			<button type="button" style="font-size:8px;">삭제</button>		            	
+              			<button type="submit" style="font-size:8px;">삭제</button>		            	
 					</td>
+					</form>
 				</tr>
+<script>
+function isDelete(){
+	var c = confirm("삭제할까요?");
+	if(!c){
+		return false;
+	}
+}
+</script>
 					<%
 			}
 		}

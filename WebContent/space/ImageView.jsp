@@ -80,11 +80,11 @@
 <div class="row mb-3">
 <div class="col-6"> 
 <button type="button" class="btn btn-secondary"
-	onclick="location.href='../space/imgEdit.do&btype=${dto.btype }&num=${param.num}&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=${dto.id }';">
+	onclick="location.href='../space/imgEdit.do?btype=${dto.btype }&num=${param.num}&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=${dto.id }';">
 	수정하기</button>
 <button type="button" class="btn btn-success"
-	onclick="location.href='../space/imgDelete.doe&btype=${dto.btype }&num=${dto.num}&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=${dto.id }';">
-	삭제하기</button> 
+	onclick="location.href='../space/imgDelete.do?&btype=${dto.btype }&num=${dto.num}&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=${dto.id }';">
+	삭제하기</button>
 </div>
 <div class="col-6 text-right pr-5">					
 <button type="button" class="btn btn-warning" 

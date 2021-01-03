@@ -92,7 +92,7 @@ dao.close();
 					  		<%=(searchColumn!=null && searchColumn.equals("name")) ?
 							"selected" : ""%>>작성자</option>
 					  	</select>
-					    <input name="searchWord" class="form-control mr-sm-2" type="text">
+					    <input name="searchWord" class="form-control mr-sm-1" type="text">
 					    <button class="btn btn-danger" type="submit">
 					    <i class='fa fa-search' style='font-size:20px'></i>
 					    </button>

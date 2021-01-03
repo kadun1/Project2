@@ -57,7 +57,7 @@ if(session.getAttribute("USER_ID")==null){
 						</tr>
 						<tr>
 							<th><img src="../images/login_tit02.gif" alt="패스워드" /></th>
-							<td><input type="text" name="user_pw" value="" class="login_input" tabindex="2"/></td>
+							<td><input type="password" name="user_pw" value="" class="login_input" tabindex="2"/></td>
 						</tr>
 					</table>
 					<p>
@@ -84,7 +84,7 @@ if(session.getAttribute("USER_ID")==null){
 				<ul class="main_board_list">
 				<c:forEach items="${notices }" var="row" varStatus="loop">
 					<li><p style="width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
-					<a href="../space/BoardView.jsp?num=${row.num }">${row.title }</a>
+					<a href="../space/BoardView.jsp?num=${row.num }&btype=0">${row.title }</a>
 					<span>${row.postdate }</span></p></li>
 				</c:forEach>
 				</ul>
@@ -94,7 +94,7 @@ if(session.getAttribute("USER_ID")==null){
 				<ul class="main_board_list">
 				<c:forEach items="${lists }" var="row" varStatus="loop">
 					<li><p style="width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
-					<a href="../space/BoardView.jsp?num=${row.num }">${row.title }</a>
+					<a href="../space/BoardView.jsp?num=${row.num }&btype=1">${row.title }</a>
 					<span>${row.postdate }</span></p></li>
 				</c:forEach>
 				</ul>
@@ -202,42 +202,18 @@ if(session.getAttribute("USER_ID")==null){
 			<div class="main_con_right">
 				<p class="main_title"><img src="../images/main_title06.gif" alt="사진게시판 PHOTO BOARD" /><a href="/space/sub04.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
 				<ul class="main_photo_list">
+				<c:forEach items="${images }" var="row" varStatus="loop">
 					<li>
 						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
+							<dt><a href="../space/imageView.do?num=${row.num }&btype=2">
+							<img src="../space/Upload/${row.sfile }" style="width:101px; height:83px;"/>
+							</a></dt>
+							<dd><a href="../space/imageView.do?num=${row.num }&btype=2">
+							<p style="width:100px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">${row.title }</p>
+							</a></dd>
 						</dl>
 					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
+				</c:forEach>
 				</ul>
 			</div>
 		</div>

@@ -18,6 +18,7 @@ public class imgViewCtrl extends HttpServlet{
 		String num = req.getParameter("num");
 		String btype = req.getParameter("btype");
 		
+		System.out.println("View컨트롤중btype:"+btype+"num:"+num);
 		ServletContext ctx = this.getServletContext();
 		BbsDAO dao = new BbsDAO(ctx);
 		
