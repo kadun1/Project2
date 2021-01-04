@@ -44,8 +44,10 @@ if(session.getAttribute("USER_ID")==null){
           <a class="dropdown-item" href="board.jsp?btype=0">공지사항</a>
           <a class="dropdown-item" href="board.jsp?btype=1">회원게시판</a>
           <a class="dropdown-item" href="board.jsp?btype=2">사진게시판</a>
-          <a class="dropdown-item" href="board.jsp?btype=3">직원게시판</a>
-          <a class="dropdown-item" href="board.jsp?btype=4">일정게시판</a>
+          <a class="dropdown-item" href="board.jsp?btype=3">일정게시판</a>
+          <a class="dropdown-item" href="board.jsp?btype=4">정보자료실</a>
+          <a class="dropdown-item" href="board.jsp?btype=5">직원자료실</a>
+          <a class="dropdown-item" href="board.jsp?btype=6">보호자게시판</a>
          </div>
       </li>
     </ul>

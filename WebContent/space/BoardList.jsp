@@ -6,6 +6,7 @@
 <%@page import="controller.BbsDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/global_head.jsp" %>
 <%
 request.setCharacterEncoding("UTF-8");
@@ -75,7 +76,7 @@ dao.close();
 				<div class="top_title">
 					<img src="../images/space/sub${param.btype}.gif" alt="자유게시판" class="con_title" />
 					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;
-					<%if(btype.equals("0")){ %>공지사항<%}else if(btype.equals("1")){ %>	자유게시판<%}else{ %><%} %><p>
+					<%if(btype.equals("0")){ %>공지사항<%}else if(btype.equals("1")){ %>	자유게시판<%}else if(btype.equals("4")){ %>정보게시판<%}else{ %><p><%} %>
 				</div>
 				<div class="center_contents">
 					<nav class="navbar navbar-expand-sm bg-white navbar-dark">
@@ -104,9 +105,11 @@ dao.close();
 				<colgroup>
 					<col width="60px"/>
 					<col width="*"/>
-					<col width="100px"/>
-					<col width="100px"/>
+					<col width="150px"/>
+					<col width="120px"/>
 					<col width="80px"/>
+					<col width="60px"/>
+				
 				</colgroup>
 				<thead>
 				<tr style="background-color: darkgray; " class="text-center text-white">
@@ -115,7 +118,7 @@ dao.close();
 					<th>작성자</th>
 					<th>작성일</th>
 					<th>조회수</th>
-					<!-- <th>첨부</th> -->
+					<th>첨부</th>
 				</tr>
 				</thead>				
 				<tbody>
@@ -151,6 +154,14 @@ dao.close();
 					<td class="text-center"><%=dto.getName() %></td>
 					<td class="text-center"><%=dto.getPostdate() %></td>
 					<td class="text-center"><%=dto.getVisitcount() %></td>
+					<td>
+				<%if(dto.getOfile()!=null){ %>
+					
+					<a href="../space/download.do?sfile=<%=dto.getSfile() %>&ofile=<%=dto.getOfile() %>&num=<%=dto.getNum() %>">
+						<i class="material-icons" style="font-size:20px">File</i>
+					</a>
+				<%} %>
+					</td>
 				</tr>
 							<!-- 리스트반복 end -->
 		<%

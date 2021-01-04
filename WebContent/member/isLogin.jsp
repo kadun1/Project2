@@ -7,6 +7,7 @@
 	먼저 컴파일된후 페이지에 삽입되므로 문제가 될 수 있다. 
 */
 
+String rBtype = request.getParameter("btype");
 //글쓰기 페이지 진입전 로그인 되었는지 확인
 if(session.getAttribute("USER_ID")==null){
 	
@@ -14,7 +15,7 @@ if(session.getAttribute("USER_ID")==null){
 	특정 페이지로 진입할시 세션이 없는경우 로그인 페이지로 이동시키게 되는데
 	이때 request객체를 통해 현재 진입하고자 하는 페이지의 URI를 얻어온다.
 	*/
-	String r_uri = request.getRequestURI();
+	String r_uri = request.getRequestURI()+"?btype="+rBtype;
 %>
 	<script>
 		/*

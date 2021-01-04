@@ -6,6 +6,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="isLogin.jsp" %>
 <%
+String btype = request.getParameter("btype");
 if(!session.getAttribute("USER_GRADE").toString().equals("1")){
 	JavascriptUtil.jsAlertBack("관리자만 수정 가능합니다.", out);
 	return;
@@ -32,6 +33,22 @@ if(!session.getAttribute("USER_GRADE").toString().equals("1")){
 			return false;
 		}
 	}
+	function checkValidatefile(fm){
+		if(fm.title.value==""){
+			alert("제목을 입력하세요."); 
+			fm.title.focus(); 
+			return false; 
+		}
+		if(fm.content.value==""){
+			alert("내용을 입력하세요."); 
+			fm.content.focus(); 
+			return false;
+		}
+		if(fm.ofile.value==""){
+			alert("파일을 첨부하세요."); 
+			return false;
+		}
+	}
 </script>
 <body id="page-top">
 <%@ include file="./include/navbar.jsp" %>
@@ -45,9 +62,14 @@ if(!session.getAttribute("USER_GRADE").toString().equals("1")){
         <h1>상세보기</h1>
         <hr>
 		<div>
-<form name="writeFrm" method="post" action="WriteProc.jsp"
-	onsubmit="return checkValidate(this);">
+<form name="writeFrm" method="post" 
+<%if(btype.equals("2")||btype.equals("4")||btype.equals("5")){ %>
+			 action="../admin/imgWrite.do" enctype="multipart/form-data"
+			onsubmit="return checkValidatefile(this);"
+<%}else{ %> action="WriteProc.jsp"
+			onsubmit="return checkValidate(this);"<%} %>   >
 <input type="hidden" name="btype" value=${param.btype } />
+<input type="hidden" name="id" value="${sessionScope.USER_ID }"/>
 <table class="table table-bordered">
 <colgroup>
 	<col width="20%"/>
@@ -56,18 +78,6 @@ if(!session.getAttribute("USER_GRADE").toString().equals("1")){
 	<col width="*"/>
 </colgroup>
 <tbody>
-<!-- 	<tr>
-		<th class="text-center" 
-			style="vertical-align:middle;">작성자</th>
-		<td>
-		<input type="text" name="name" class="form-control" />
-		</td>
-		<th class="text-center" 
-			style="vertical-align:middle;">이메일</th>
-		<td>
-			<input type="text" name="email" class="form-control" />
-		</td>
-	</tr> -->
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">제목</th>
@@ -83,13 +93,15 @@ if(!session.getAttribute("USER_GRADE").toString().equals("1")){
 			class="form-control"></textarea>
 		</td>
 	</tr>
-	<!-- <tr>
+<%if(btype.equals("2")||btype.equals("4")||btype.equals("5")){ %>
+	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
-		<td colspan="3">
-			파일명.jpg
+		<td>
+			<input type="file" class="form-control" name="ofile"/>
 		</td>
-	</tr> -->
+	</tr>
+<%} %>
 </tbody>
 </table>
 <div style="float:right;">

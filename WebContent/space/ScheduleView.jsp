@@ -4,37 +4,26 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
 <%
-String queryStr = "";
-String searchColumn = request.getParameter("searchColumn");
-String searchWord = request.getParameter("searchWord");
-if(searchWord!=null){
-	queryStr += "searchColumn="+searchColumn+"&searchWord="+searchWord;
-}
-//2페이지에서 상세보기 했다면 리스트로 돌아갈때도 페이지가 유지되어야 한다.
-String nowPage = request.getParameter("nowPage");
-
-if(nowPage==null){
-	queryStr += "&nowPage="+1;
-}
-else{
-	queryStr += "&nowPage="+nowPage;
-}
-
-//파라미터로 전송된 게시물의 일련번호를 받음
-String num = request.getParameter("num");
 String btype = request.getParameter("btype");
-queryStr += "&btype="+btype;
+
+//파라미터로 전송된 게시물의 타입과 일정을 받음
+String year = request.getParameter("year");
+String month = request.getParameter("month");
+String day = request.getParameter("day");
+//년,월,일을 합산하여 게시물 컬럼 구성
+String schedule = year+month+day;
+
 BbsDAO dao = new BbsDAO(application);
 
-//조회수를 업데이트하여 visitcount컬럼을 1증가시킴
-dao.updateVisitCount(num);
-
-//일련번호에 해당하는 게시물을 DTO객체로 반환함
-BbsDTO dto = dao.selectView(num, btype);
+//스케쥴에 해당하는 게시물을 DTO객체로 반환함
+BbsDTO dto = dao.selectSchedule(schedule, btype);
 
 dao.close();
-%>
 
+if(dto.getTitle()==null){
+%>
+<script> alert('등록된 일정이 없습니다.'); history.back();</script>
+<%}else{ %>
  <body>
 	<div id="wrap">
 		<%@ include file="../include/top.jsp" %>
@@ -47,13 +36,12 @@ dao.close();
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/space/sub${param.btype }.gif" alt="자유게시판" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;
-					<%if(btype.equals("0")){ %>공지사항<%}else if(btype.equals("1")){ %>	자유게시판<%}else if(btype.equals("4")){ %>정보게시판<%}else{ %><p><%} %>
+					<img src="../images/space/sub${param.btype }.gif" alt="일정게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
 				</div>
 				<div>
 
-<form enctype="multipart/form-data">
+<form>
 <table class="table table-bordered">
 <colgroup>
 	<col width="20%"/>
@@ -65,7 +53,7 @@ dao.close();
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">작성자</th>
-		<td><%=dto.getId() %></td>
+		<td><%=dto.getName() %></td>
 		<th class="text-center" 
 			style="vertical-align:middle;">작성일</th>
 		<td><%=dto.getPostdate() %></td>
@@ -77,8 +65,8 @@ dao.close();
 			<%=dto.getE_mail() %>
 		</td>
 		<th class="text-center" 
-			style="vertical-align:middle;">조회수</th>
-		<td><%=dto.getVisitcount() %></td>
+			style="vertical-align:middle;">일정</th>
+		<td>${param.year }년 ${param.month }월 ${param.day }일</td>
 	</tr>
 	<tr>
 		<th class="text-center" 
@@ -94,21 +82,17 @@ dao.close();
 			<%=dto.getContent().replace("\r\n","<br/>") %>
 		</td>
 	</tr>
-<%if(btype.equals("4")){ %>
-	<tr>
+	<!-- <tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
-			<%=dto.getOfile() %>
-		<a href="../space/download.do?sfile=<%=dto.getSfile() %>&ofile=<%=dto.getOfile() %>&num=<%=dto.getNum() %>">
-						[다운로드]
-		</a>
+			파일명.jpg
 		</td>
-	</tr>
-<%} %>
+	</tr> -->
 </tbody>
 </table>
 </form>
+<%} %>
 <!-- 각종 버튼 부분 -->
 <div class="row text-right" style="float:right; margin-right:2px;">
 <%if(!btype.equals("0")){
@@ -145,7 +129,7 @@ if(session.getAttribute("USER_ID")!=null &&
 </script>
 <%} %>		 		
 	<button type="button" class="btn btn-warning" 
-		onclick="location.href='BoardList.jsp?<%=queryStr %>';">리스트보기</button>
+		onclick="location.href='schedule.jsp?btype=${param.btype}';">리스트보기</button>
 </div>
 
 				</div>

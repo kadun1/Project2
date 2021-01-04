@@ -92,17 +92,29 @@ dao.close();
 			<%=dto.getContent().replace("\r\n","<br/>") %>
 		</td>
 	</tr>
-	<!-- <tr>
+	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
-			파일명.jpg
+		<%if(dto.getOfile()!=null){ %>
+			<%=dto.getOfile() %>
+			<a href="../space/download.do?sfile=<%=dto.getSfile() %>&ofile=<%=dto.getOfile() %>&num=<%=dto.getNum() %>">
+			[다운로드]
+		<%} %>
 		</td>
-	</tr> -->
+	</tr>
 </tbody>
 </table>
 </form>
 <div style="float:right;">
+<%if(btype.equals("2")||btype.equals("4")||btype.equals("5")){ %>
+<button type="button" class="btn btn-secondary"
+	onclick="location.href='../admin/imgEdit.do?btype=${param.btype }&num=<%=dto.getNum() %>&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=<%=dto.getId()%>';">
+	수정하기</button>
+<button type="button" class="btn btn-success"
+	onclick="location.href='../admin/imgDelete.do?&btype=${param.btype }&num=<%=dto.getNum() %>&nowPage=${param.nowPage }&searchColumn=${param.searchColumn }&searchWord=${param.searchWord }&id=<%=dto.getId()%>';">
+	삭제하기</button>
+<%}else{ %>
 <form name="deleteFrm">
 	<input type="hidden" name="num" value="<%=dto.getNum() %>" />
 	<input type="hidden" name="btype" value="${param.btype }" />
@@ -111,6 +123,7 @@ dao.close();
 		onclick="location.href='edit.jsp?num=<%=dto.getNum()%>&btype=${param.btype }';">수정하기</button>
 	<button type="button" class="btn btn-success"
 		onclick="isDelete();">삭제하기</button>
+<%} %>
 <script>
 function isDelete(){
 	var c = confirm("삭제할까요?");

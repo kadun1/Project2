@@ -26,11 +26,7 @@ dao.close();
 <html lang="en">
 <%@ include file="./include/head.jsp" %>
 <script>
-	/* 연습문제] 글쓰기 폼에 빈값이 있는경우 서버로 전송되지
-			않도록 아래 validate()함수를 완성하시오.
-			모든 값이 입력되었다면 WriteProc.jsp로 
-			submit되어야 한다.
-	*/
+
 	function checkValidate(fm){
 		if(fm.title.value==""){
 			alert("제목을 입력하세요."); 
@@ -40,6 +36,23 @@ dao.close();
 		if(fm.content.value==""){
 			alert("내용을 입력하세요."); 
 			fm.content.focus(); 
+			return false;
+		}
+	}
+	
+	function checkValidatefile(fm){
+		if(fm.title.value==""){
+			alert("제목을 입력하세요."); 
+			fm.title.focus(); 
+			return false; 
+		}
+		if(fm.content.value==""){
+			alert("내용을 입력하세요."); 
+			fm.content.focus(); 
+			return false;
+		}
+		if(fm.ofile.value==""){
+			alert("파일을 첨부하세요."); 
 			return false;
 		}
 	}
@@ -56,8 +69,12 @@ dao.close();
         <h1>수정하기</h1>
         <hr>
 		<div>
-<form name="writeFrm" method="post" action="EditProc.jsp"
-	onsubmit="return checkValidate(this);">
+<form name="writeFrm" method="post" 
+<%if(btype.equals("2")||btype.equals("4")||btype.equals("5")){ %>
+			 action="../admin/imgEdit.do" enctype="multipart/form-data"
+			onsubmit="return checkValidatefile(this);"
+<%}else{ %> action="EditProc.jsp"
+			onsubmit="return checkValidate(this);"<%} %>   >
 <input type="hidden" name="num" value="<%=num %>" />
 <input type="hidden" name="btype" value="<%=btype %>" />
 <table class="table table-bordered">
@@ -106,13 +123,16 @@ dao.close();
 			class="form-control"><%=dto.getContent()%></textarea>
 		</td>
 	</tr>
-	<!-- <tr>
+<%if(btype.equals("2")||btype.equals("4")||btype.equals("5")){ %>
+	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
-		<td colspan="3">
-			파일명.jpg
+		<td>
+			기존파일명:<%=dto.getOfile() %>
+			<input type="file" class="form-control" name="ofile"/>
 		</td>
-	</tr> -->
+	</tr>
+<%} %>
 </tbody>
 </table>
 <div style="float:right;">

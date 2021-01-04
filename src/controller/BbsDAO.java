@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +123,7 @@ public class BbsDAO {
 				//파일명 받기(서버저장, 원본)
 				dto.setSfile(rs.getString("sfile"));
 				dto.setOfile(rs.getString("ofile"));
-				
+				dto.setSchedule(rs.getString("schedule"));
 				
 				bbs.add(dto);
 			}
@@ -276,12 +277,77 @@ public class BbsDAO {
 		}
 	}
 	
+	public BbsDTO selectSchedule(String schedule, String btype) {
+
+		BbsDTO dto = new BbsDTO();
+		System.out.println(schedule+" "+btype);
+		
+		//게시판, 회원 테이블을 조인하여 이름까지 가져와서 조회
+		String query = ""
+			+"SELECT B.*, M.name, M.e_mail "
+			+" FROM multi_board B INNER JOIN membership M "
+			+"    ON B.id=M.id "
+			+" WHERE schedule=? AND btype=? ";
+
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, schedule);
+			psmt.setString(2, btype);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setId(rs.getString("id"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setVisitcount(rs.getString("visitcount"));
+				dto.setBtype(rs.getString("btype"));
+				dto.setSchedule(rs.getString("schedule"));
+				/*
+				member 테이블과 join하여 얻어온 name과
+				e_mail을 DTO에 추가함.
+				 */
+				dto.setName(rs.getString("name"));
+				dto.setE_mail(rs.getString("e_mail"));
+				
+				System.out.println("게시판타입"+dto.getBtype());
+			}
+		}
+		catch(Exception e) {
+			System.out.println("상세보기시 예외발생");
+			e.printStackTrace();
+		}
+
+		return dto;
+	}
+	
+	public Map<String, String> selectAllSchedule(String btype) {
+
+		Map<String, String> map = new HashMap<String, String>();
+		System.out.println(btype);
+		
+		String query = " SELECT title, schedule from multi_board WHERE btype=? ";
+
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, btype);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				map.put(rs.getString("schedule"), rs.getString("title"));
+				System.out.println(rs.getString("schedule")+" "+rs.getString("title"));
+			}
+		}
+		catch(Exception e) {
+			System.out.println("달력제목 출력시 예외발생");
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
 	public BbsDTO selectView(String num, String btype) {
 
 		BbsDTO dto = new BbsDTO();
 		System.out.println(num+" "+btype);
-		//게시판 테이블만 사용하여 게시물 조회
-		//String query = "SELECT * FROM board WHERE num=?";
 		
 		//게시판, 회원 테이블을 조인하여 이름까지 가져와서 조회
 		String query = ""
@@ -296,21 +362,21 @@ public class BbsDAO {
 			psmt.setString(2, btype);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
-				dto.setNum(rs.getString(1));
-				dto.setTitle(rs.getString(2));
-				dto.setContent(rs.getString(3));
-				dto.setId(rs.getString(4));
-				dto.setPostdate(rs.getDate(5));
-				dto.setVisitcount(rs.getString(6));
-				dto.setBtype(rs.getString(7));
-				dto.setSfile(rs.getString(8));
-				dto.setOfile(rs.getString(9));
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setId(rs.getString("id"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setVisitcount(rs.getString("visitcount"));
+				dto.setBtype(rs.getString("btype"));
+				dto.setSfile(rs.getString("sfile"));
+				dto.setOfile(rs.getString("ofile"));
 				/*
 				member 테이블과 join하여 얻어온 name과
 				e_mail을 DTO에 추가함.
 				 */
-				dto.setName(rs.getString(10));
-				dto.setE_mail(rs.getString(11));
+				dto.setName(rs.getString("name"));
+				dto.setE_mail(rs.getString("e_mail"));
 				
 				System.out.println("게시판타입"+dto.getBtype());
 			}
@@ -377,7 +443,7 @@ public class BbsDAO {
 				+ " title,content,id,visitcount,btype,sfile,ofile) "
 				+ " VALUES ( "
 				+ " ?, ?, ?, 0, ?, ?, ?)";
-
+			System.out.println(query);
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getContent());
@@ -442,6 +508,24 @@ public class BbsDAO {
 		return affected;
 	}
 	
+	public int deleteImg(BbsDTO dto) {
+		int affected = 0;
+		try {
+			String query = "DELETE FROM multi_board WHERE num=? ";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getNum());
+			
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("delete중 예외발생");
+			e.printStackTrace();
+		}
+
+		return affected;
+	}
+	
 	public int updateEdit(BbsDTO dto) {
 		int affected = 0;
 		System.out.println("업데이트문 진입??");
@@ -465,6 +549,34 @@ public class BbsDAO {
 
 		return affected;
 	}
+	
+	public int adminUpdateImg(BbsDTO dto) {
+		int affected = 0;
+		System.out.println("업데이트문 진입??");
+		System.out.println(dto.getOfile()+" "+dto.getSfile());
+		try {
+			String query = " UPDATE multi_board SET "
+					+ " title=?, content=?, "
+					+ " sfile=?, ofile=? "
+					+ " WHERE num=? ";
+
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getSfile());
+			psmt.setString(4, dto.getOfile());
+			psmt.setString(5, dto.getNum());
+
+			affected = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("update중 예외발생");
+			e.printStackTrace();
+		}
+
+		return affected;
+	}
+	
 	
 	public int updateImg(BbsDTO dto) {
 		int affected = 0;
@@ -493,6 +605,7 @@ public class BbsDAO {
 
 		return affected;
 	}
+	
 	
 	public int adminUpdateEdit(BbsDTO dto) {
 		int affected = 0;

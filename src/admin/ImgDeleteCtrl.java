@@ -1,4 +1,4 @@
-package controller;
+package admin;
 
 import java.io.IOException;
 
@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controller.BbsDAO;
+import controller.BbsDTO;
 import util.FileUtil;
 
-@WebServlet("/space/imgDelete.do")
+@WebServlet("/admin/imgDelete.do")
 public class ImgDeleteCtrl extends HttpServlet{
 	
 	@Override
@@ -30,8 +32,9 @@ public class ImgDeleteCtrl extends HttpServlet{
 		BbsDAO dao = new BbsDAO(app);
 		//첨부파일 삭제를 위해 기존의 게시물을 가져와서 DTO객체에 저장.
 		BbsDTO dto = dao.selectView(num, btype);
+		System.out.println("이미지삭제중:"+dto.getNum());
 		//게시물 삭제
-		int sucOrFail = dao.deleteImg(dto, id);
+		int sucOrFail = dao.deleteImg(dto);
 		if(sucOrFail==1) { 
 			//게시물 삭제가 완료되었다면 첨부파일도 삭제한다. 
 			String fileName = dto.getSfile();
@@ -43,7 +46,7 @@ public class ImgDeleteCtrl extends HttpServlet{
 		req.setAttribute("WHEREIS", "DELETE");
 		req.setAttribute("SUC_FAIL", sucOrFail);
 		
-		req.getRequestDispatcher("/space/Message.jsp").forward(req, resp);
+		req.getRequestDispatcher("/admin/Message.jsp").forward(req, resp);
 		
 	}
 	

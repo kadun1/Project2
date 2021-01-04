@@ -1,4 +1,4 @@
-package controller;
+package admin;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,19 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 
+import controller.BbsDAO;
+import controller.BbsDTO;
 import util.FileUtil;
 
-@WebServlet("/space/imgWrite.do")
+@WebServlet("/admin/imgWrite.do")
 public class ImgWriteCtrl extends HttpServlet{
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/space/ImageWrite.jsp").forward(req, resp);
-	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
 		req.setCharacterEncoding("UTF-8");
 		
 		String realFileName = null;
@@ -123,22 +120,15 @@ public class ImgWriteCtrl extends HttpServlet{
 		
 		if(sucOrFail==1&&btype.equals("2")){
 			//글쓰기 성공시 리스트로 이동
-			resp.sendRedirect("../space/image.do?btype="+btype+"");
+			resp.sendRedirect("../admin/board.jsp?btype="+btype+"");
 		}
 		else if(sucOrFail==1&&!btype.equals("2")) {
-			resp.sendRedirect("../space/BoardList.jsp?btype="+btype+"");
+			resp.sendRedirect("../admin/board.jsp?btype="+btype+"");
 		}
-		else if(sucOrFail!=1&&btype.equals("2")){
+		else{
 			//실패시 글쓰기 페이지로 이동
-			req.getRequestDispatcher("/space/ImageWrite.jsp")
+			req.getRequestDispatcher("/admin/write.jsp")
 				.forward(req, resp);
-		}
-		else {
-			PrintWriter out = resp.getWriter();
-			out.println("<script>alert('작성에 실패했습니다');"
-					+ " history.back(); "
-					+ "</script>");
-			out.close();
 		}
 			
 	}

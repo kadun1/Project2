@@ -9,6 +9,7 @@
 //파라미터로 전송된 게시물의 일련번호를 받음
 String num = request.getParameter("num");
 String btype = request.getParameter("btype");
+
 BbsDAO dao = new BbsDAO(application);
 
 //본인이 작성한 게시물이므로 조회수 증가는 의미없음.

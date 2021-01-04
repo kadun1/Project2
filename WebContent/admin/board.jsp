@@ -120,6 +120,7 @@ dao.close();
 				<col width="150px"/>
 				<col width="70px"/>
 				<col width="70px"/>
+				<col width="100px"/>
               </colgroup>
                 <thead>
                   <tr style="text-align:center">
@@ -130,6 +131,11 @@ dao.close();
                     <th>작성일</th>
                     <th>수정</th>
                     <th>삭제</th>
+        <%if(btype.equals("3")){ %>
+        			<th>일정</th>
+        <%}else{ %>
+                    <th>첨부파일</th>
+        <%} %>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,7 +147,7 @@ dao.close();
 			//게시물이 없는 경우...
 		%>
  				<tr>
- 					<td colspan="6" align="center" height="100">
+ 					<td colspan="8" align="center" height="100">
  						등록된 게시물이 없습니다. 
  					</td>
  				</tr>
@@ -177,6 +183,13 @@ dao.close();
 					<td class="text-center">
               			<button type="submit" style="font-size:8px;">삭제</button>		            	
 					</td>
+			<%if(dto.getOfile()!=null&&!btype.equals("3")){ %>
+					<td> <a href="../space/download.do?sfile=<%=dto.getSfile() %>&ofile=<%=dto.getOfile() %>&num=<%=dto.getNum() %>"><%=dto.getOfile() %></td>
+			<%}else if(btype.equals("3")){ %>
+					<td><%=dto.getSchedule() %></td>
+			<%}else{ %>
+					<td></td>
+			<%} %>
 					</form>
 				</tr>
 <script>

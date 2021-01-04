@@ -13,7 +13,14 @@ public class BbsDTO {
 	private String btype;
 	private String sfile;
 	private String ofile;
+	private String schedule;
 	
+	public String getSchedule() {
+		return schedule;
+	}
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
+	}
 	public String getSfile() {
 		return sfile;
 	}

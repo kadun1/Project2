@@ -3,11 +3,6 @@
 <%@ include file="../include/global_head.jsp" %>
 <%@ include file="../member/isLogin.jsp" %>
 <script>
-	/* 연습문제] 글쓰기 폼에 빈값이 있는경우 서버로 전송되지
-			않도록 아래 validate()함수를 완성하시오.
-			모든 값이 입력되었다면 WriteProc.jsp로 
-			submit되어야 한다.
-	*/
 	function checkValidate(fm){
 		if(fm.title.value==""){
 			alert("제목을 입력하세요."); 
@@ -17,6 +12,22 @@
 		if(fm.content.value==""){
 			alert("내용을 입력하세요."); 
 			fm.content.focus(); 
+			return false;
+		}
+	}
+	function checkValidatefile(fm){
+		if(fm.title.value==""){
+			alert("제목을 입력하세요."); 
+			fm.title.focus(); 
+			return false; 
+		}
+		if(fm.content.value==""){
+			alert("내용을 입력하세요."); 
+			fm.content.focus(); 
+			return false;
+		}
+		if(fm.ofile.value==""){
+			alert("파일을 첨부하세요."); 
 			return false;
 		}
 	}
@@ -34,13 +45,20 @@
 			<div class="right_contents">
 				<div class="top_title">
 					<img src="../images/space/sub${param.btype }.gif" alt="게시판" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;
+					<% String btype = request.getParameter("btype");
+					if(btype.equals("0")){ %>공지사항<%}else if(btype.equals("1")){ %>	자유게시판<%}else if(btype.equals("4")){ %>정보게시판<%}else{ %><p><%} %>
 				</div>
 				<div>
 
-<form name="writeFrm" method="post" action="WriteProc.jsp"
-	onsubmit="return checkValidate(this);">
+<form name="writeFrm" method="post" 
+<%if(btype.equals("4")||btype.equals("5")){ %>
+			 action="../space/imgWrite.do" enctype="multipart/form-data"
+			onsubmit="return checkValidatefile(this);"
+<%}else{ %> action="WriteProc.jsp"
+			onsubmit="return checkValidate(this);"<%} %>   >
 <input type="hidden" name="btype" value="${param.btype }" />
+<input type="hidden" name="id" value="${sessionScope.USER_ID }"/>
 <table class="table table-bordered">
 <colgroup>
 	<col width="20%"/>
@@ -85,13 +103,15 @@
 			<textarea rows="10" name="content" class="form-control"></textarea>
 		</td>
 	</tr>
-	<!-- <tr>
+<%if(btype.equals("4")){ %>
+	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td>
-			<input type="file" class="form-control" />
+			<input type="file" class="form-control" name="ofile"/>
 		</td>
-	</tr> -->
+	</tr>
+<%} %>
 </tbody>
 </table>
 
