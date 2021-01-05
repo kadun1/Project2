@@ -1,6 +1,10 @@
+<%@page import="java.util.GregorianCalendar"%>
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,20 +15,7 @@
 @import url("../css/main.css");
 @import url("../css/sub.css");
 </style>
-<script>
-function loginValidate(fn){
-	if(!fn.user_id.value){
-		alert("아이디를 입력하세요");
-		fn.user_id.focus();
-		return false;
-	}
-	if(fn.user_pw.value==""){
-		alert("패스워드를 입력하세요");
-		fn.user_pw.focus();
-		return false;
-	}
-}
-</script>
+<%@ include file="../include/mainJSinclude.jsp"%>
 </head>
 <body>
 <center>
@@ -34,15 +25,14 @@ function loginValidate(fn){
 		<div id="main_visual">
 		<a href="/product/sub01.jsp"><img src="../images/main_image_01.jpg" /></a><a href="/product/sub01_02.jsp"><img src="../images/main_image_02.jpg" /></a><a href="/product/sub01_03.jsp"><img src="../images/main_image_03.jpg" /></a><a href="/product/sub02.jsp"><img src="../images/main_image_04.jpg" /></a>
 		</div>
-
 		<div class="main_contents">
 			<div class="main_con_left">
 				<p class="main_title" style="border:0px; margin-bottom:0px;"><img src="../images/main_title01.gif" alt="로그인 LOGIN" /></p>
 				<div class="login_box">
  				<form action="../main/main.do" method="post" name="loginFrm" onsubmit="return loginValidate(this);" >
-<%
-if(session.getAttribute("USER_ID")==null){
-%>
+				<%
+				if(session.getAttribute("USER_ID")==null){
+				%>
 					<table cellpadding="0" cellspacing="0" border="0">
 						<colgroup>
 							<col width="45px" />
@@ -62,19 +52,19 @@ if(session.getAttribute("USER_ID")==null){
 					</table>
 					<p>
 						<input type="checkbox" name="id_save" value="Y" tabindex="3"
-						 <%if(request.getAttribute("cookie_save")!=null){ %>
+					<%if(request.getAttribute("cookie_save")!=null){ %>
 						 	checked='checked' <% } %>  />
 						 <img src="../images/login_tit03.gif" alt="저장" />
 						<a href="../member/id_pw.jsp"><img src="../images/login_btn02.gif" alt="아이디/패스워드찾기" /></a>
 						<a href="../member/join01.jsp"><img src="../images/login_btn03.gif" alt="회원가입" /></a>
 					</p>
-<%} else { %>
+					<%} else { %>
 					<p style="padding:10px 0px 10px 10px"><span style="font-weight:bold; color:#333;"><%=session.getAttribute("USER_NAME") %>님,</span> 반갑습니다.<br />로그인 하셨습니다.</p>
 					<p style="text-align:right; padding-right:10px;">
 						<a href=""><img src="../images/login_btn04.gif" /></a>
 						<a href="../member/logout.jsp"><img src="../images/login_btn05.gif" /></a>
 					</p>
-<% } %>
+					<% } %>
 				</form>
 				</div>
 			</div>
@@ -106,98 +96,10 @@ if(session.getAttribute("USER_ID")==null){
 				<p class="main_title"><img src="../images/main_title04.gif" alt="월간일정 CALENDAR" /></p>
 				<img src="../images/main_tel.gif" />
 			</div>
-			<div class="main_con_center">
-				<p class="main_title" style="border:0px; margin-bottom:0px;"><img src="../images/main_title05.gif" alt="월간일정 CALENDAR" /></p>
-				<div class="cal_top">
-					<table cellpadding="0" cellspacing="0" border="0">
-						<colgroup>
-							<col width="13px;" />
-							<col width="*" />
-							<col width="13px;" />
-						</colgroup>
-						<tr>
-							<td><a href=""><img src="../images/cal_a01.gif" style="margin-top:3px;" /></a></td>
-							<td><img src="../images/calender_2012.gif" />&nbsp;&nbsp;<img src="../images/calender_m1.gif" /></td>
-							<td><a href=""><img src="../images/cal_a02.gif" style="margin-top:3px;" /></a></td>
-						</tr>
-					</table>
-				</div>
-				<div class="cal_bottom">
-					<table cellpadding="0" cellspacing="0" border="0" class="calendar">
-						<colgroup>
-							<col width="14%" />
-							<col width="14%" />
-							<col width="14%" />
-							<col width="14%" />
-							<col width="14%" />
-							<col width="14%" />
-							<col width="*" />
-						</colgroup>
-						<tr>
-							<th><img src="../images/day01.gif" alt="S" /></th>
-							<th><img src="../images/day02.gif" alt="M" /></th>
-							<th><img src="../images/day03.gif" alt="T" /></th>
-							<th><img src="../images/day04.gif" alt="W" /></th>
-							<th><img src="../images/day05.gif" alt="T" /></th>
-							<th><img src="../images/day06.gif" alt="F" /></th>
-							<th><img src="../images/day07.gif" alt="S" /></th>
-						</tr>
-						<tr>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">1</a></td>
-							<td><a href="">2</a></td>
-							<td><a href="">3</a></td>
-						</tr>
-						<tr>
-							<td><a href="">4</a></td>
-							<td><a href="">5</a></td>
-							<td><a href="">6</a></td>
-							<td><a href="">7</a></td>
-							<td><a href="">8</a></td>
-							<td><a href="">9</a></td>
-							<td><a href="">10</a></td>
-						</tr>
-						<tr>
-							<td><a href="">11</a></td>
-							<td><a href="">12</a></td>
-							<td><a href="">13</a></td>
-							<td><a href="">14</a></td>
-							<td><a href="">15</a></td>
-							<td><a href="">16</a></td>
-							<td><a href="">17</a></td>
-						</tr>
-						<tr>
-							<td><a href="">18</a></td>
-							<td><a href="">19</a></td>
-							<td><a href="">20</a></td>
-							<td><a href="">21</a></td>
-							<td><a href="">22</a></td>
-							<td><a href="">23</a></td>
-							<td><a href="">24</a></td>
-						</tr>
-						<tr>
-							<td><a href="">25</a></td>
-							<td><a href="">26</a></td>
-							<td><a href="">27</a></td>
-							<td><a href="">28</a></td>
-							<td><a href="">29</a></td>
-							<td><a href="">30</a></td>
-							<td><a href="">31</a></td>
-						</tr>
-						<tr>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-						</tr>
-					</table>
-				</div>
+			<div class="main_con_center" id="calDisplay">
+			
+			<!-- 일정표 ajax 삽입부분 -->
+		
 			</div>
 			<div class="main_con_right">
 				<p class="main_title"><img src="../images/main_title06.gif" alt="사진게시판 PHOTO BOARD" /><a href="/space/sub04.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>

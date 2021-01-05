@@ -8,6 +8,8 @@ request.setCharacterEncoding("UTF-8");
 
 String title = request.getParameter("title");//제목
 String content = request.getParameter("content");//내용
+title= new String(title .getBytes("8859_1"), "UTF-8");
+content = new String(content .getBytes("8859_1"), "UTF-8");
 String btype = request.getParameter("btype");
 System.out.println(btype);
 //DTO객체에 폼값과 아이디 저장

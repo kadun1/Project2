@@ -78,9 +78,37 @@
     <url-pattern>/space/imgEdit.do</url-pattern>
   </servlet-mapping>
   
-
+  <!-- 직원게시판 리스트 -->
+  <servlet>
+    <servlet-name>empList</servlet-name>
+    <servlet-class>controller.EmpListCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>empList</servlet-name>
+    <url-pattern>/community/empList.do</url-pattern>
+  </servlet-mapping>
   
+    <!-- 직원게시판 작성 -->
+   <servlet>
+    <servlet-name>empWrite</servlet-name>
+    <servlet-class>controller.EmpWriteCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>empWrite</servlet-name>
+    <url-pattern>/community/empWrite.do</url-pattern>
+  </servlet-mapping>
   
+  <!-- 직원게시판 수정 -->
+  <servlet>
+    <servlet-name>empEdit</servlet-name>
+    <servlet-class>controller.EmpEditCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>empEdit</servlet-name>
+    <url-pattern>/community/empEdit.do</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 직원게시판리스트보기 -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>

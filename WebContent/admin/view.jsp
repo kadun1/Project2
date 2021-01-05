@@ -70,9 +70,15 @@ dao.close();
 		<td>
 			<%=dto.getE_mail() %>
 		</td>
+<%if(btype.equals("3")){ %>
+		<th class="text-center" 
+			style="vertical-align:middle;">일정</th>
+		<td><%=dto.getSchedule() %></td>	
+<%}else{ %>
 		<th class="text-center" 
 			style="vertical-align:middle;">조회수</th>
 		<td><%=dto.getVisitcount() %></td>
+<%} %>
 	</tr>
 	<tr>
 		<th class="text-center" 

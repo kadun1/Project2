@@ -11,6 +11,8 @@ request.setCharacterEncoding("UTF-8");
 String num = request.getParameter("num");
 String title = request.getParameter("title");
 String content = request.getParameter("content");
+title= new String(title .getBytes("8859_1"), "UTF-8");
+content = new String(content .getBytes("8859_1"), "UTF-8");
 String btype = request.getParameter("btype");
 
 //DTO객체생성

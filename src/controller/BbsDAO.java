@@ -369,8 +369,11 @@ public class BbsDAO {
 				dto.setPostdate(rs.getDate("postdate"));
 				dto.setVisitcount(rs.getString("visitcount"));
 				dto.setBtype(rs.getString("btype"));
+				//파일타입이 있다면 추가..
 				dto.setSfile(rs.getString("sfile"));
 				dto.setOfile(rs.getString("ofile"));
+				//일정이 있다면 추가..
+				dto.setSchedule(rs.getString("schedule"));
 				/*
 				member 테이블과 join하여 얻어온 name과
 				e_mail을 DTO에 추가함.
@@ -400,16 +403,16 @@ public class BbsDAO {
 			명시하지 않는다.
 			 */
 			String query = "INSERT INTO multi_board ( "
-				+ " title,content,id,visitcount,btype) "
+				+ " title,content,id,visitcount,btype,schedule) "
 				+ " VALUES ( "
-				+ " ?, ?, ?, 0, ?)";
-
+				+ " ?, ?, ?, 0, ?, ?)";
+System.out.print("zzzzz="+dto.getTitle());
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getId());
 			psmt.setString(4, dto.getBtype());
-			
+			psmt.setString(5, dto.getSchedule());
 			/*
 			쿼리문 실행시 사용하는 메소드
 			 	executeQuery() : select계열의 쿼리문을
@@ -428,6 +431,7 @@ public class BbsDAO {
 		}
 		return affected;
 	}
+	
 	
 	public int insertImgWrite(BbsDTO dto) {
 		int affected = 0;
@@ -608,19 +612,21 @@ public class BbsDAO {
 	
 	
 	public int adminUpdateEdit(BbsDTO dto) {
+		System.out.println(dto.getTitle()+"||"+dto.getContent());
 		int affected = 0;
 		try {
 			String query = " UPDATE multi_board B "
 					+ " INNER JOIN membership M "
 					+ " ON B.id=M.id SET "
-					+ " title=?, content=?, e_mail=? "
+					+ " title=?, content=?, e_mail=?, schedule=? "
 					+ " WHERE B.num = ? ";
 
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getE_mail());
-			psmt.setString(4, dto.getNum());
+			psmt.setString(4, dto.getSchedule());
+			psmt.setString(5, dto.getNum());
 			affected = psmt.executeUpdate();
 			System.out.println(affected);
 		}

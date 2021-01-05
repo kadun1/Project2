@@ -13,10 +13,19 @@ String num = request.getParameter("num");
 String btype = request.getParameter("btype");
 String title = request.getParameter("title");
 String content = request.getParameter("content");
+System.out.println(title+"<>"+content);
+/* title= new String(title .getBytes("8859_1"), "UTF-8");
+content = new String(content .getBytes("8859_1"), "UTF-8"); */
 String email = request.getParameter("email");
+String schedule = request.getParameter("schedule");
+System.out.println(title+"<>"+content);
+
 
 //DTO객체생성
 BbsDTO dto = new BbsDTO();
+if(schedule!=null){
+	dto.setSchedule(schedule);	
+} 
 dto.setNum(num);//특정게시물에 대한 수정이므로  일련번호 추가됨.
 dto.setTitle(title);
 dto.setContent(content);

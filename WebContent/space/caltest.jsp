@@ -67,9 +67,9 @@ for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 	}
 }
 %>
-
 	</tr>
 </table>
+
 
 </body>
 </html>

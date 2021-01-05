@@ -18,7 +18,7 @@ import com.oreilly.servlet.MultipartRequest;
 import util.FileUtil;
 import util.JavascriptUtil;
 
-public class ImgEditCtrl extends HttpServlet{
+public class EmpEditCtrl extends HttpServlet{
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class ImgEditCtrl extends HttpServlet{
 			out.close();
 		}
 		else {
-			req.getRequestDispatcher("/space/ImageEdit.jsp")
+			req.getRequestDispatcher("/community/empEdit.jsp")
 			.forward(req, resp);
 		}
 	}
@@ -157,6 +157,6 @@ public class ImgEditCtrl extends HttpServlet{
 		//수정처리 이후에는 상세보기 페이지로 이동한다. 
 		req.setAttribute("SUC_FAIL", sucOrFail);
 		req.setAttribute("WHEREIS", "UPDATE");				
-		req.getRequestDispatcher("/space/Message.jsp").forward(req, resp);		
+		req.getRequestDispatcher("/community/Message.jsp").forward(req, resp);		
 	}
 }

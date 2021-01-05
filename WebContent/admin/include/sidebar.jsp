@@ -20,12 +20,10 @@
 if(session.getAttribute("USER_ID")==null){
 %>
           <a class="dropdown-item" href="login.jsp">Login</a>
-          <a class="dropdown-item" href="register.jsp">Register</a>
-          <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+          <a class="dropdown-item" href="register.jsp">Register</a>    
 <%} else { %>
 		<a class="dropdown-item" href="logout.jsp">Logout</a>
           <a class="dropdown-item" href="memctrl.jsp">회원관리</a>
-          <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
 <% } %>
         </div>
       </li>

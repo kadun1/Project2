@@ -6,7 +6,7 @@
 <%@ include file="../include/global_head.jsp" %>
 <%
 request.setCharacterEncoding("UTF-8");
-//필요없을지도..
+
 String btype = request.getParameter("btype");
 BbsDAO dao = new BbsDAO(application);
 

@@ -21,12 +21,14 @@ if(!session.getAttribute("USER_GRADE").toString().equals("1")){
 
 dao.close();
 %>
-
-<!DOCTYPE html>
-<html lang="en">
 <%@ include file="./include/head.jsp" %>
 <script>
-
+$( function() {
+    $( "#datepicker" ).datepicker({
+    	"dateFormat":"yymd"
+    });
+  });
+  
 	function checkValidate(fm){
 		if(fm.title.value==""){
 			alert("제목을 입력하세요."); 
@@ -57,6 +59,8 @@ dao.close();
 		}
 	}
 </script>
+<!DOCTYPE html>
+<html>
 <body id="page-top">
 <%@ include file="./include/navbar.jsp" %>
   <div id="wrapper">
@@ -127,9 +131,16 @@ dao.close();
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
-		<td>
+		<td colspan="3">
 			기존파일명:<%=dto.getOfile() %>
 			<input type="file" class="form-control" name="ofile"/>
+		</td>
+	</tr>
+<%}else if(btype.equals("3")){  %>
+	<tr>
+		<th class="text-center" style="vertical-align:middle;">일정</th>
+		<td colspan="3">
+		<input type="text" id="datepicker" name="schedule">  
 		</td>
 	</tr>
 <%} %>
@@ -145,19 +156,14 @@ dao.close();
       </div>
       <!-- /.container-fluid -->
 </div>
-<%@ include file="./include/footer.jsp" %>
-
     </div>
+<%@ include file="./include/footer.jsp" %>
     <!-- /.content-wrapper -->
   </div>
   <!-- /#wrapper -->
 <%@ include file="./include/bottom.jsp" %>
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin.min.js"></script>

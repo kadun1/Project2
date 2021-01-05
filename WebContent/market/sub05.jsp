@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
-
+<%@ include file="../member/isLogin.jsp" %>
 
  <body>
-	<center>
 	<div id="wrap">
 		<%@ include file="../include/top.jsp" %>
 
@@ -50,18 +49,20 @@
 						<col width="*" />
 					</colgroup>
 					<tbody>
+					<form name="wantExp">
+					<input type="hidden" name="id" value="${sessionScope.id }" />
 						<tr>
 							<th>고객명/회사명</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="name"  value="" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>장애유무</th>
 							<td style="text-align:left;" style="padding:0px;">
 								<table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
 									<tr>
-										<td style="border-bottom:0px;"><input type="radio" name=""  value="" /> 유&nbsp;&nbsp;&nbsp;<input type="radio" name=""  value="" /> 무</td>
+										<td style="border-bottom:0px;"><input type="radio" name="incon"  value="Y" /> 유&nbsp;&nbsp;&nbsp;<input type="radio" name="incon"  value="N" /> 무</td>
 										<th style="border-bottom:0px;" width="100px">주요장애유형</th>
-										<td style="border-right:0px; border-bottom:0px;"><input type="text" name=""  value="" class="join_input" /></td>
+										<td style="border-right:0px; border-bottom:0px;"><input type="text" name="incontype"  value="" class="join_input" /></td>
 									</tr>
 								</table>
 							</td>
@@ -71,24 +72,32 @@
 							<td style="text-align:left;" style="padding:0px;">
 								<table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
 									<tr>
-										<td style="border-bottom:0px;"><input type="radio" name=""  value="" /> 유&nbsp;&nbsp;&nbsp;<input type="radio" name=""  value="" /> 무</td>
+										<td style="border-bottom:0px;"><input type="radio" name="item"  value="Y" /> 유&nbsp;&nbsp;&nbsp;<input type="radio" name="item"  value="N" /> 무</td>
 										<th style="border-bottom:0px;" width="100px">보장구 명</th>
-										<td style="border-right:0px; border-bottom:0px;"><input type="text" name=""  value="" class="join_input" /></td>
+										<td style="border-right:0px; border-bottom:0px;"><input type="text" name="itemname"  value="" class="join_input" /></td>
 									</tr>
 								</table>
 							</td>
 						</tr>
 						<tr>
 							<th>연락처</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="phone1" value="" class="join_input" style="width:50px;" maxlength="5" /> - <input type="text" name="phone2"  value="" class="join_input" style="width:50px;" onkeyup="numFocus(this, 4, 'phone3');" /> - <input type="text" name="phone3"  value="" class="join_input" style="width:50px;" onkeyup="numFocus(this, 4, 'mobile1');"/></td>
 						</tr>
 						<tr>
 							<th>담당자 휴대전화</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;">
+							<select name="mobile1" class="join_input" style="width:50px; padding:0;" onchange="numFocus(this, 3, 'mobile2');">
+								<option value="010" selected>010</option>
+		                        <option value="011">011</option>
+		                        <option value="016">016</option>
+		                        <option value="019">019</option>
+							</select>
+							 - 
+							 <input type="text" name="mobile2"  value="" class="join_input" style="width:50px;" onkeyup="numFocus(this, 4, 'mobile3');"/> - <input type="text" name="mobile3"  value="" class="join_input" style="width:50px;" onkeyup="numFocus(this, 4, 'e_mail1');"/></td>
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:100px;" /> @ <input type="text" name=""  value="" class="join_input" style="width:100px;" /></td>
+							<td style="text-align:left;"><input type="text" name="e_mail1"  value="" class="join_input" style="width:100px;" /> @ <input type="text" name="e_mail2"  value="" class="join_input" style="width:100px;" /></td>
 						</tr>
 						<tr>
 							<th>체험내용</th>
@@ -96,38 +105,62 @@
 								<table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
 									<tr>
 										<td>케익체험</td>
-										<td style="border-right:0px;"><input type="text" name=""  value="" class="join_input" /></td>
+										<td style="border-right:0px;"><input type="text" name="cakeexp"  value="" class="join_input" /></td>
 									</tr>
 									<tr>
 										<td style="border-bottom:0px;">쿠키체험</td>
-										<td style="border:0px;"><input type="text" name=""  value="" class="join_input" /></td>
+										<td style="border:0px;"><input type="text" name="cookieexp"  value="" class="join_input" /></td>
 									</tr>
 								</table>
 							</td>
 						</tr>
 						<tr>
 							<th>체험희망날짜</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" /></td>
+							<td style="text-align:left;">
+							<input type="text" id="datepicker" name="wantday" class="join_input" readonly>
+							</td>
 						</tr>
 						<tr>
 							<th>접수종류 구분</th>
-							<td style="text-align:left;"><input type="radio" name=""  value="" /> 예약신청
-&nbsp;&nbsp;&nbsp;<input type="radio" name=""  value="" /> 견적문의</td>
+							<td style="text-align:left;"><input type="radio" name="wanttype"  value="reservation" /> 예약신청
+&nbsp;&nbsp;&nbsp;<input type="radio" name="wanttype"  value="howmuch" /> 견적문의</td>
 						</tr>
 						<tr>
 							<th>기타특이사항</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:400px;" /></td>
+							<td style="text-align:left;"><input type="text" name="etc"  value="" class="join_input" style="width:400px;" /></td>
 						</tr>
+						</form>
 					</tbody>
 				</table>
-				<p style="text-align:center; margin-bottom:40px"><a href=""><img src="../images/btn01.gif" /></a>&nbsp;&nbsp;<a href="#"><img src="../images/btn02.gif" /></a></p>
+				<p style="text-align:center; margin-bottom:40px"><img src="../images/btn01.gif" onclick="go();" style="cursor:pointer;" />&nbsp;&nbsp;<img src="../images/btn02.gif" onclick="back();" style="cursor:pointer"/></p>
 			</div>
 		</div>
 		<%@ include file="../include/quick.jsp" %>
 	</div>
-	
+<script>
+function back(){
+	history.back();
+}
+function go(){
+	var w = document.wantExp;
+	w.method = "post";
+	w.action = "../market/experience.do";
+	w.submit();
+}
+function numFocus(obj, mLenght, next_obj){
+    var strLength = obj.value.length;
+
+    if(strLength>=mLenght){
+         document.getElementsByName(next_obj)[0].focus();
+    }
+}
+$( function() {
+    $( "#datepicker" ).datepicker({
+    	"dateFormat":"yy-mm-dd"
+    });
+});
+</script>
 
 	<%@ include file="../include/footer.jsp" %>
-	</center>
  </body>
 </html>

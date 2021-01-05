@@ -1,4 +1,4 @@
-<%@page import="org.json.simple.JSONObject"%>
+<%-- <%@page import="org.json.simple.JSONObject"%>
 <%@page import="controller.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -29,4 +29,4 @@ else{
 dao.close();
 String jsonStr = json.toJSONString();
 out.print(jsonStr);
-%>
+%> --%>
